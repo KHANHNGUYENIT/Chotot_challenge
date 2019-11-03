@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Image,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,9 +11,7 @@ import {
 export default class NotificationScreen extends React.Component {
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <Text>Thông báo</Text>
-      </ScrollView>
+      <Text>Thông báo</Text>
     );
   }
 }

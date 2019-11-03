@@ -3,78 +3,107 @@ import React from 'react';
 import {
   Image,
   Platform,
-  ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  TextInput,
+  Text,
   View,
+  FlatList,
+  ScrollView
 } from 'react-native';
 
-import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
+import { styles } from '../styles/styles';
 
-import { MonoText } from '../components/StyledText';
+import { Search } from '../components/Search';
+import { Button } from '../components/Button';
+import { renderList } from '../components/HorizontalList';
 
-const Search = props => {
-  return (
-    <View style={styles.contain_search}>
-      <Text style={styles.logo}>Chợ Tốt</Text>
-      <TextInput style={styles.input_search} placeholder="Search..." />
-      <TouchableOpacity style={styles.icon}>
-        <FontAwesome name="shopping-bag" size={27} color="#fff" />
-      </TouchableOpacity>
-    </View>
-  );
-}
+const data = [
+  { Id: "1", ItemName: "Iphone 6S 32G Quốc Tế-Đủ màu.Mới98%.zin100%", Price: 50000, Time: 1, ImageUrl: require("../assets/images/iphone.png") },
+  { Id: "2", ItemName: "Iphone6", Price: 50000, Time: 1, ImageUrl: require("../assets/images/iphone.png") },
+  { Id: "3", ItemName: "Iphone6", Price: 50000, Time: 1, ImageUrl: require("../assets/images/iphone.png") },
+  { Id: "4", ItemName: "Iphone6", Price: 50000, Time: 1, ImageUrl: require("../assets/images/iphone.png") },
+  { Id: "5", ItemName: "Iphone6", Price: 50000, Time: 1, ImageUrl: require("../assets/images/iphone.png") },
+  { Id: "6", ItemName: "Iphone6", Price: 50000, Time: 1, ImageUrl: require("../assets/images/iphone.png") },
+];
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Search></Search>
-      <View style={{ flex: 9 }}>
-        <Text>HomeScreen</Text>
+export default class HomeScreen extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      buttonActive: 1
+    }
+  }
+
+  onPress = ()=>{
+
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Search></Search>
+        <View style={{ flex: 9 }}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ flex: 4}}>
+              <View style={styles.containBtn}>
+                <Button text="Gần tôi" icon="" onPress = {this.onPress}></Button>
+                <Button text="Mới đây" icon=""></Button>
+                <Button text="Hot" icon=""></Button>
+              </View>
+              <View>
+                <FlatList
+                  data={data}
+                  renderItem={renderList}
+                  keyExtractor={item => item.Id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+            <View style={{ flex: 6 }}>
+              <View style={styles.headerGroup}>
+                <Text style={styles.header}>Có thể bạn quan tâm</Text>
+                <TouchableOpacity>
+                  <Text style={styles.link}>Xem thêm</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <FlatList
+                  data={data}
+                  renderItem={renderList}
+                  keyExtractor={item => item.Id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+            <View style={{ flex: 6 }}>
+              <View style={styles.headerGroup}>
+                <Text style={styles.header}>Đồ điện tử</Text>
+                <TouchableOpacity>
+                  <Text style={styles.link}>Xem thêm</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <FlatList
+                  data={data}
+                  renderItem={renderList}
+                  keyExtractor={item => item.Id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contain_search: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "#ffba00",
-    flexDirection: "row",
-  },
-  input_search: {
-    borderRadius: 15,
-    height: 30,
-    width: "80%",
-    borderWidth: 1,
-    borderColor: "white",
-    marginVertical: 25,
-    // marginHorizontal: 10,
-    paddingHorizontal: 10,
-    backgroundColor: "white"
-  },
-  logo:{
-    color:"white",
-    fontWeight:"bold",
-    width:"10%",
-    paddingTop:20,
-    paddingHorizontal:5
-  },
-  icon:{
-    marginTop:25,
-    marginLeft:8
-  }
-});
+
