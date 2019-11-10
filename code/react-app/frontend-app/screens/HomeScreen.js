@@ -30,12 +30,18 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      buttonActive: 1
+      tabCurrent: 1
     }
   }
 
-  onPress = ()=>{
+  setTabCurrent = (tabId)=>{
+    this.setState({
+      tabCurrent: tabId
+    })
+  }
 
+  getDataByTabId = ()=>{
+    
   }
 
   render() {
@@ -46,9 +52,9 @@ export default class HomeScreen extends React.Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 4}}>
               <View style={styles.containBtn}>
-                <Button text="Gần tôi" icon="" onPress = {this.onPress}></Button>
-                <Button text="Mới đây" icon=""></Button>
-                <Button text="Hot" icon=""></Button>
+                <Button text={"Gần tôi"} id={1} icon={""} currentBtn = {this.state.tabCurrent} setTabCurrent = {this.setTabCurrent} ></Button>
+                <Button text={"Mới đây"} id={2} icon={""} currentBtn = {this.state.tabCurrent} setTabCurrent = {this.setTabCurrent}></Button>
+                <Button text={"Phổ biến"} id={3} icon={""} currentBtn = {this.state.tabCurrent} setTabCurrent = {this.setTabCurrent}></Button>
               </View>
               <View>
                 <FlatList

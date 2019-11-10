@@ -8,6 +8,7 @@ import categoryApp from '../screens/categoryApp';
 import NotificationScreen from '../screens/NotificationScreen';
 import MessageScreen from '../screens/MessageScreen';
 import PersonalScreen from '../screens/PersonalScreen';
+import LoginScreen from '../screens/Login';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -100,6 +101,7 @@ MessageStack.path = '';
 const PersonalStack = createStackNavigator(
   {
     Personal: PersonalScreen,
+    Login: LoginScreen
   },
   config
 );
