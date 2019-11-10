@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('../../model/user');
-
+const User = require('../../models/user');
+const SaltRounds= 10;
 exports.register = (req, res, next) => {
     if (!req.body.password) {
         res.status(500).json({
@@ -22,7 +22,7 @@ exports.register = (req, res, next) => {
                 req.body['id'] = id;
                 req.body['createdAt'] = createdDate;
                  // Insert Authentication database
-                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                bcrypt.hash(req.body.password, SaltRounds, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
                             message: err
