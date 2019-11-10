@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import CategoryScreen from '../screens/CategoryScreen';
+import categoryApp from '../screens/categoryApp';
 import NotificationScreen from '../screens/NotificationScreen';
 import MessageScreen from '../screens/MessageScreen';
 import PersonalScreen from '../screens/PersonalScreen';
@@ -42,7 +42,7 @@ HomeStack.path = '';
 
 const CategoryStack = createStackNavigator(
   {
-    Category: CategoryScreen,
+    Category: categoryApp,
   },
   config
 );
