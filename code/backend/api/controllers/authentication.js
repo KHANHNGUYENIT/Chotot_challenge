@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../../model/user');
-const Network = require('../../network_model/network');
+const User = require('../../models/user');
 const jwtBlacklist = require('jwt-blacklist')(jwt);
 
 exports.login =  (req, res, next) => {
