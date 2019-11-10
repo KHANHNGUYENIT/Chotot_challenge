@@ -50,12 +50,13 @@ export default class HomeScreen extends React.Component {
         <Search></Search>
         <View style={{ flex: 9 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ flex: 4}}>
+            <View style={styles.viewFlatHome}>
               <View style={styles.containBtn}>
                 <Button text={"Gần tôi"} id={1} icon={""} currentBtn = {this.state.tabCurrent} setTabCurrent = {this.setTabCurrent} ></Button>
                 <Button text={"Mới đây"} id={2} icon={""} currentBtn = {this.state.tabCurrent} setTabCurrent = {this.setTabCurrent}></Button>
                 <Button text={"Phổ biến"} id={3} icon={""} currentBtn = {this.state.tabCurrent} setTabCurrent = {this.setTabCurrent}></Button>
               </View>
+              <View style={{flex: 0.05,marginTop:4, height:1, backgroundColor:'#ffa100'}}></View>
               <View>
                 <FlatList
                   data={data}
@@ -66,13 +67,14 @@ export default class HomeScreen extends React.Component {
                 />
               </View>
             </View>
-            <View style={{ flex: 6 }}>
+            <View style={styles.viewFlatHome}>
               <View style={styles.headerGroup}>
                 <Text style={styles.header}>Có thể bạn quan tâm</Text>
                 <TouchableOpacity>
                   <Text style={styles.link}>Xem thêm</Text>
                 </TouchableOpacity>
               </View>
+              <View style={{flex: 0.05,marginTop:2, height:1, backgroundColor:'#ffa100'}}></View>
               <View>
                 <FlatList
                   data={data}
@@ -83,13 +85,14 @@ export default class HomeScreen extends React.Component {
                 />
               </View>
             </View>
-            <View style={{ flex: 6 }}>
+            <View style={styles.viewFlatHome}>
               <View style={styles.headerGroup}>
                 <Text style={styles.header}>Đồ điện tử</Text>
                 <TouchableOpacity>
                   <Text style={styles.link}>Xem thêm</Text>
                 </TouchableOpacity>
               </View>
+              <View style={{flex: 0.05, marginTop:2, height:1, backgroundColor:'#ffa100'}}></View>
               <View>
                 <FlatList
                   data={data}

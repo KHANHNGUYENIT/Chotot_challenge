@@ -87,7 +87,25 @@ const styles = StyleSheet.create({
     },
     itemPrice:{
       color:"red"
-    }
+    },
+    viewFlatHome:{
+      flex: 6,
+      marginTop:7,
+      marginBottom: 7,
+      marginLeft: 7,
+      marginRight:7,
+      borderRadius:14,
+
+      elevation: 5, // Android
+      shadowColor: '#CFD8DC', // iOS
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.5,
+      shadowRadius: 2,
+      backgroundColor: '#fff'
+    },
   });
 
   export {styles}
