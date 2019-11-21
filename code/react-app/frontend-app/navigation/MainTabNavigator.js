@@ -9,6 +9,8 @@ import NotificationScreen from '../screens/NotificationScreen';
 import MessageScreen from '../screens/MessageScreen';
 import PersonalScreen from '../screens/PersonalScreen';
 import LoginScreen from '../screens/Login';
+import RegisterScreen from '../screens/Register';
+import AdDetailScreen from '../screens/AdDetailScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -18,12 +20,13 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
+    AdDetail: AdDetailScreen
   },
   config
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Đi chợ',
   tabBarOptions: { 
     activeTintColor: '#ffa100',
   },
@@ -101,7 +104,8 @@ MessageStack.path = '';
 const PersonalStack = createStackNavigator(
   {
     Personal: PersonalScreen,
-    Login: LoginScreen
+    Login: LoginScreen,
+    Register: RegisterScreen
   },
   config
 );

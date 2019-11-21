@@ -3,37 +3,19 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import { FontAwesome } from '@expo/vector-icons';
 import * as color from '../constants/Colors';
 
-export default class LoginScreen extends React.Component {
+export default class RegisterScreen extends React.Component {
   constructor() {
     super();
     this.state = {
       userName: "",
-      passWord: ""
+      passWord: "",
+      confirmPass:""
     }
   }
 
-  eventLogin = () => {
-    fetch('https://mywebsite.com/endpoint/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userName: this.state.userName,
-        passWord: this.state.passWord,
-      }),
-    }).then((data)=>{
-      this.props.navigation.navigate('Home');
-    }).catch((error)=>{
-      
-    });
-  }
+  eventSignIn =()=>{
 
-  createAccount = ()=>{
-    this.props.navigation.navigate('Register');
   }
-  
 
   render() {
     return (
@@ -54,25 +36,25 @@ export default class LoginScreen extends React.Component {
             }}>
           </TextInput>
         </View>
-        <TouchableOpacity style={styles.button} onPress={this.eventLogin()}>
-          <Text style={styles.textBtn}>Đăng nhập</Text>
-        </TouchableOpacity>
-        <View style={styles.container1}>
-          <TouchableOpacity style={styles.pr20} onPress={()=>this.createAccount()}>
-            <Text>Tạo tài khoản</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>Quên mật khẩu?</Text>
-          </TouchableOpacity>
+        <View>
+          <FontAwesome icon="lock" size={27}></FontAwesome>
+          <TextInput style={styles.input} secureTextEntry={true} placeholder="Nhập lại mật khẩu"
+            onChangeText={val => {
+              this.setState({ passWord: val });
+            }}>
+          </TextInput>
         </View>
+        <TouchableOpacity style={styles.button} onPress={this.eventSignIn()}>
+          <Text style={styles.textBtn}>Đăng ký</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
 };
 
-LoginScreen.navigationOptions = {
-  title: 'Đăng nhập'
+RegisterScreen.navigationOptions = {
+  title: 'Đăng ký'
 };
 
 const styles = StyleSheet.create({
@@ -87,7 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 300,
     height: 45,
-    marginBottom: 16,
+    marginBottom: 15,
     paddingHorizontal: 10,
   },
   button: {
@@ -102,13 +84,5 @@ const styles = StyleSheet.create({
   textBtn: {
     color: "#fff",
     fontWeight: "bold"
-  },
-  container1:{
-    flexDirection:"row",
-    justifyContent: "space-between"
-  },
-  pr20:{
-    paddingRight:100
   }
-
 });
