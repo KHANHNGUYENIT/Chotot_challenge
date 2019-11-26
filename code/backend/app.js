@@ -25,10 +25,10 @@ app.use(bodyParser.json());
 
 // Add headers to avoid CORS problem
 app.use((req, res, next) => {
-    // res.header('Access-Control-Allow-Origin', '*');
-    // res.header('Access-Control-Allow-Credentials', true);
-    // res.header('Access-Control-Allow-Headers', 
-    //            'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Headers', 
+               'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
         return res.status(200).json({}); 
@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 const testRoutes = require('./api/routes/test');
 const authenticationRoutes = require('./api/routes/authentication');
 const registerRoute = require('./api/routes/register');
+const itemRoute = require('./api/routes/item');
 
 // const infoRoutes = require('./api/routes/info');
 
@@ -47,6 +48,7 @@ const registerRoute = require('./api/routes/register');
 app.use('/api/v1/test', testRoutes);
 app.use('/api/v1/register', registerRoute);
 app.use('/api/v1/authentication', authenticationRoutes);
+app.use('/api/v1/item',itemRoute);
 
 // app.use('/api/v1/info', infoRoutes);
 

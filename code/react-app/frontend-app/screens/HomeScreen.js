@@ -30,8 +30,13 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabCurrent: 1
+      tabCurrent: 1,
+      data: []
     }
+  }
+
+  componentDidMount(){
+    // this.getData();
   }
 
   renderList = ({ item }) => {
@@ -45,6 +50,21 @@ export default class HomeScreen extends React.Component {
       </TouchableWithoutFeedback>
     )
 
+  }
+
+  getData = async ()=>{
+    const api = 'http://192.168.1.147:8080/api/v1/item/';
+    // const api = 'https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000&limit=20&o=0';
+    try {
+      console.log('before fetch');
+      const response = await fetch(api);
+
+      const jsonData = await response.json();
+      this.setState({data:jsonData});
+      console.log(jsonData);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   setTabCurrent = (tabId) => {
