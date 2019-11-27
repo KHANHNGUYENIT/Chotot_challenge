@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#F8F8FF',
       justifyContent: 'center',
     },
     contain_search: {
@@ -96,6 +96,10 @@ const styles = StyleSheet.create({
       marginRight:7,
       borderRadius:14,
 
+      borderWidth:1,
+      borderColor: '#ffba00',
+
+      
       elevation: 5, // Android
       shadowColor: '#CFD8DC', // iOS
       shadowOffset: {

@@ -18,6 +18,9 @@ export default class MessageScreen extends React.Component {
 
 MessageScreen.navigationOptions = {
   title: 'Tin nhắn',
+  headerStyle: {
+    backgroundColor: "#ffba00",
+  },
 };
 
 const styles = StyleSheet.create({

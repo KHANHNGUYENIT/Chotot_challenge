@@ -18,6 +18,9 @@ export default class NotificationScreen extends React.Component {
 
 NotificationScreen.navigationOptions = {
   title: 'Thông báo',
+  headerStyle: {
+    backgroundColor: "#ffba00",
+  },
 };
 
 const styles = StyleSheet.create({

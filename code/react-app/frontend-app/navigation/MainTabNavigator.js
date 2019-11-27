@@ -4,13 +4,16 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import categoryApp from '../screens/categoryApp';
 import NotificationScreen from '../screens/NotificationScreen';
 import MessageScreen from '../screens/MessageScreen';
 import PersonalScreen from '../screens/PersonalScreen';
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import AdDetailScreen from '../screens/AdDetailScreen';
+import DeviceDetail from '../screens/DeviceDetail';
+import DeviceList from '../screens/DeviceList';
+import CategoryScreen from '../screens/CategoryScreen';
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -20,7 +23,9 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    AdDetail: AdDetailScreen
+    AdDetail: AdDetailScreen,
+    Details: DeviceDetail,
+    Profile: DeviceList,
   },
   config
 );
@@ -46,7 +51,10 @@ HomeStack.path = '';
 
 const CategoryStack = createStackNavigator(
   {
-    Category: categoryApp,
+    Category: CategoryScreen,
+    // Profile: DeviceList,
+    // Details: DeviceDetail,
+
   },
   config
 );
@@ -62,6 +70,7 @@ CategoryStack.navigationOptions = {
 };
 
 CategoryStack.path = '';
+
 
 const NotificationStack = createStackNavigator(
   {
@@ -127,7 +136,7 @@ const tabNavigator = createBottomTabNavigator({
   CategoryStack,
   NotificationStack,
   MessageStack,
-  PersonalStack
+  PersonalStack,
 });
 
 tabNavigator.path = '';

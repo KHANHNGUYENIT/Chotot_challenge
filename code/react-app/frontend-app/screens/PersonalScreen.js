@@ -33,6 +33,9 @@ export default class PersonalScreen extends React.Component {
 
 PersonalScreen.navigationOptions = {
   title: 'Cá nhân',
+  headerStyle: {
+    backgroundColor: "#ffba00",
+  },
 };
 
 const styles = StyleSheet.create({

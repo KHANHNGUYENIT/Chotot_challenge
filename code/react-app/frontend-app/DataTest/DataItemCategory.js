@@ -2,14 +2,25 @@
 
 var listDataItemCategory =[
     {
+        id: 0,
+        name: "Có thể bạn quan tâm",
+        openLink: 'Xem thêm',
+        imageUrl: '' ,
+        Api: "https://gateway.chotot.com/v1/public/ad-listing?region_v2=3017&area_v2=301706&cg=1000&limit=20&st=s,k",
+    },
+    {
         id: 1,
         name: "Bất động sản",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/cho-tot-nha.png?v=1" ,
+        openLink: 'Xem thêm',
+        imageUrl: "https://bdscaocap.net/wp-content/uploads/2018/12/12b_tifz.jpg" ,
+        Api: "https://gateway.chotot.com/v1/public/ad-listing?region_v2=3017&area_v2=301706&cg=1000&limit=20&st=s,k",
     },
     {
         id: 2,
         name: "Đồ điện tử",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/do-dien-tu.png" ,
+        openLink: 'Xem thêm',
+        imageUrl: "https://www.vietnambooking.com/wp-content/uploads/2019/10/co-duoc-mang-do-dien-tu-len-may-bay-hay-khong_1.jpg" ,
+        Api: "https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000",
     },
     {
         id: 3,
@@ -39,7 +50,7 @@ var listDataItemCategory =[
     {
         id: 8,
         name: "Mẹ và bé",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/me-va-be.png" ,
+        imageUrl: "https://ameovat.com/wp-content/uploads/2016/12/me-va-be.jpg" ,
     },
     {
         id: 9,
@@ -73,6 +84,11 @@ var listDataItemCategory =[
     },
     {
         id: 15,
+        name: "Cho tặng miễn phí",
+        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/cho-tang-mien-phi.png" ,
+    },
+    {
+        id: 166,
         name: "Cho tặng miễn phí",
         imageUrl: "https://static.chotot.com/storage/marketplace/home/category/cho-tang-mien-phi.png" ,
     },

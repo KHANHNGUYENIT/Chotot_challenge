@@ -10,7 +10,7 @@ import {   StyleSheet,
   Alert,
   TextInput,
   View,} from 'react-native';
-//import listDataItemCategory  from '../DataTest/DataItemCategory';
+
 
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import listDataItemCategory from '../DataTest/DataItemCategory';
@@ -31,38 +31,47 @@ const Search = props => {
 
 
 const centerData = Math.floor(listDataItemCategory.length /2);
-// const showAlert = () =>{
-//   // 
-//   this.props.navigation.navigate('Profile')
-// }
+
 class Category extends React.Component  {
+  constructor(props) {
+    super(props);
+  }
+
+  showAlert = () => {
+    Alert("Feature will update soon!")
+  }
+  onPress = (id) => {
+    switch(id){
+      case 1 : this.props.navigation.navigate('Profile',{data: id});
+                break;
+      case 2: this.props.navigation.navigate('Profile',{data: id});
+              break;
+      default: //showAlert();
+                break;
+    }
+  }
+
+    
   render() {
     return (
-      // <View style={styles.container}>
-      //   <Text style={styles.headerText} >Home Activity</Text>
-      //   <Button
-      //     title="Go to Profile Activity"
-      //     onPress={() => this.props.navigation.navigate('Profile')}
-      //   />
-      // </View>
               <View style={styles.container}>
                 <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#ffffff" translucent = {true}/>
                 <Search></Search>
               <View style={{flex: 9}}>
                   <ScrollView contentContainerStyle ={{  flexDirection:'row', justifyContent:'space-between' }}>
                     <View style={styles.viewtouch}>
-                    {listDataItemCategory.slice(0, centerData).map(item =>{return(
-                            <TouchableOpacity style = {styles.touchview} onPress = {() => this.props.navigation.navigate('Profile')} key={item.id}>
-                              <Image style = {styles.viewImage} source = {{uri: item.imageUrl}} key={item.id}></Image>
+                    {listDataItemCategory.slice(1,centerData).map(item =>{return(
+                            <TouchableOpacity style = {styles.touchview} onPress={() => this.onPress(item.id)}  key={item.id}>
+                              <Image style = {styles.viewImage} source = {{uri: item.imageUrl}} key={item.id} ></Image>
                               <Text style = {styles.viewtext}> {item.name}</Text>
                             </TouchableOpacity> 
                     );
                         })}
                     </View>
                     <View style={styles.viewtouch}>
-                      {listDataItemCategory.slice(centerData).map(item =>{return(
-                              <TouchableOpacity style = {styles.touchview} onPress = {() => this.props.navigation.navigate('Profile')} key={item.id}>
-                                  <Image style = {styles.viewImage} source = {{uri: item.imageUrl}}key={item.id}></Image>
+                      {listDataItemCategory.slice(centerData,15).map(item =>{return(
+                              <TouchableOpacity style = {styles.touchview} onPress={() => this.onPress(item.id)} key={item.id}>
+                                  <Image style = {styles.viewImage} source = {{uri: item.imageUrl}}key={item.id} ></Image>
                                   <Text style = {styles.viewtext}> {item.name}</Text>
                               </TouchableOpacity> );
                           })}
@@ -77,7 +86,6 @@ class Category extends React.Component  {
 
     
 Category.navigationOptions = {
-  // title: 'Danh muc',
   header : null,
 };
 const styles = StyleSheet.create({
@@ -166,5 +174,6 @@ const styles = StyleSheet.create({
   }
 
 });
-
 export default Category;
+
+
