@@ -9,16 +9,19 @@ exports.login =  (req, res, next) => {
             message: 'Invalid credentials.'
         });
     }
-    User.findOne({email: req.body.phone, deleted: false})
+    console.log('data: '+req.body.phone+req.body.password)
+    User.findOne({phone: req.body.phone, deleted: false})
         .exec()
         .then(result => {
             if (!result) {
+                console.log("not result")
                 res.status(401).json({
                     message: 'Invalid credentials.'
                 });
             } else {
                 bcrypt.compare(req.body.password, result.password, (error, success) => {
                     if (error || success === false) {
+                        console.log("PW ")
                         res.status(401).json({
                             message: 'Invalid credentials.'
                         });

@@ -1,32 +1,34 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import * as color from '../constants/Colors';
+import {} from '../constants/Colors';
+import {cloneDeep} from 'lodash';
+import requestApi from '../utilities/request';
+import * as AUTHENTICATION_API from '../apis/authentication';
 
 export default class LoginScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      userName: "",
+      phone: "",
       passWord: ""
     }
   }
 
   eventLogin = () => {
-    fetch('https://mywebsite.com/endpoint/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userName: this.state.userName,
-        passWord: this.state.passWord,
-      }),
-    }).then((data)=>{
+    let api = cloneDeep(AUTHENTICATION_API.login);
+    
+    api.request.body = JSON.stringify({
+      phone: this.state.phone,
+      password: this.state.passWord,
+    });
+    console.log(api);
+    requestApi(api)
+    .then((data)=>{
       this.props.navigation.navigate('Home');
     }).catch((error)=>{
-      
+      alert('Ban da nhap sai sdt hoac mat khau');
+      console.log(error);
     });
   }
 
@@ -42,7 +44,7 @@ export default class LoginScreen extends React.Component {
           <FontAwesome icon="user" size={27}></FontAwesome>
           <TextInput style={styles.input} placeholder="Tên đăng nhập"
             onChangeText={val => {
-              this.setState({ userName: val });
+              this.setState({ phone: val });
             }}>
           </TextInput>
         </View>
@@ -54,7 +56,7 @@ export default class LoginScreen extends React.Component {
             }}>
           </TextInput>
         </View>
-        <TouchableOpacity style={styles.button} onPress={this.eventLogin()}>
+        <TouchableOpacity style={styles.button} onPress={this.eventLogin}>
           <Text style={styles.textBtn}>Đăng nhập</Text>
         </TouchableOpacity>
         <View style={styles.container1}>

@@ -7,14 +7,33 @@ export default class RegisterScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      userName: "",
+      phone: "",
       passWord: "",
       confirmPass:""
     }
   }
 
-  eventSignIn =()=>{
-
+  eventSignUp =()=>{
+    console.log('aaa');
+    console.log(this.state.phone)
+    fetch('http://192.168.1.147:8080/api/v1/register', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        phone: this.state.phone,
+        password: this.state.passWord,
+        role: "buyer"
+      }),
+    }).then((data)=>{
+      this.props.navigation.navigate('Login');
+    }).catch((error)=>{
+      throw new Error(error)
+      alert('sdt da ton tai',error);
+      console.log('error',error)
+    });
   }
 
   render() {
@@ -22,9 +41,9 @@ export default class RegisterScreen extends React.Component {
       <View style={styles.container}>
         <View>
           <FontAwesome icon="user" size={27}></FontAwesome>
-          <TextInput style={styles.input} placeholder="Tên đăng nhập"
+          <TextInput style={styles.input} placeholder="Phone"
             onChangeText={val => {
-              this.setState({ userName: val });
+              this.setState({ phone: val });
             }}>
           </TextInput>
         </View>
@@ -44,7 +63,7 @@ export default class RegisterScreen extends React.Component {
             }}>
           </TextInput>
         </View>
-        <TouchableOpacity style={styles.button} onPress={this.eventSignIn()}>
+        <TouchableOpacity style={styles.button} onPress={this.eventSignUp}>
           <Text style={styles.textBtn}>Đăng ký</Text>
         </TouchableOpacity>
       </View>
