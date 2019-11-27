@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {} from '../constants/Colors';
 import {cloneDeep} from 'lodash';
@@ -24,11 +24,14 @@ export default class LoginScreen extends React.Component {
     });
     console.log(api);
     requestApi(api)
-    .then((data)=>{
+    .then(async(data)=>{
+      var res = await data.json();
+
+      await AsyncStorage.setItem('@TOKEN:key', res.token);
+
       this.props.navigation.navigate('Home');
     }).catch((error)=>{
       alert('Ban da nhap sai sdt hoac mat khau');
-      console.log(error);
     });
   }
 
