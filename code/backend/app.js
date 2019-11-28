@@ -13,7 +13,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Connect DB
-const mongooseConnectionStr = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+//const mongooseConnectionStr = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+const mongooseConnectionStr =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(mongooseConnectionStr, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true  });
 
 // Some untilities

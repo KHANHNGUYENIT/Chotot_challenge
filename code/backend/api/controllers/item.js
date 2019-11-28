@@ -1,10 +1,11 @@
 const https = require('https');
-
+const hostName='gateway.chotot.com';
+const postApi = 443;
 exports.item = (req, res, next)=>{
     var options = {
-        host : 'gateway.chotot.com',
+        host : process.env.API_HOST || hostName ,
         path : '/v1/public/ad-listing?app_id=android&cg=5000&limit=20&o=0',
-        port : 443,
+        port : process.env.API_PORT ||postApi,
         method : 'GET'
       }
     
