@@ -3,11 +3,13 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import DeviceDetail from '../screens/DeviceDetail';
 import DeviceList from '../screens/DeviceList';
 import Category from '../screens/Category';
+import SavedItemScreen from '../screens/SavedItemScreen'
 const AppNavigator = createStackNavigator(  
   {  
       Home: Category,  
       Profile: DeviceList,
-      Details: DeviceDetail,
+      Details:{ screen: DeviceDetail, navigationOptions: {  tabBarVisible: false, }},
+      History: SavedItemScreen,
   },  
   {  
       initialRouteName: "Home"  

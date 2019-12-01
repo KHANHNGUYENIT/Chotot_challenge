@@ -13,7 +13,7 @@ import AdDetailScreen from '../screens/AdDetailScreen';
 import DeviceDetail from '../screens/DeviceDetail';
 import DeviceList from '../screens/DeviceList';
 import CategoryScreen from '../screens/CategoryScreen';
-
+import SavedItemScreen from '../screens/SavedItemScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -24,7 +24,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     AdDetail: AdDetailScreen,
-    Details: DeviceDetail,
+    Details:{ screen: DeviceDetail, navigationOptions: { tabBarVisible: false, } },
     Profile: DeviceList,
   },
   config
@@ -114,7 +114,8 @@ const PersonalStack = createStackNavigator(
   {
     Personal: PersonalScreen,
     Login: LoginScreen,
-    Register: RegisterScreen
+    Register: RegisterScreen,
+    History: SavedItemScreen,
   },
   config
 );

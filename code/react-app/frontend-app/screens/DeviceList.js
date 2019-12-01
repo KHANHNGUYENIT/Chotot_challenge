@@ -4,6 +4,8 @@ import { StyleSheet, Text,
          TouchableWithoutFeedback,
          View, FlatList, Image,TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 class DeviceList extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -100,12 +102,14 @@ class DeviceList extends React.Component {
       return (
         <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={()=>this.onPress(item)} >
             <View style={{flexDirection: 'row' }}>
-                <View  style={{flex: 0.34}}>
+                <View  style={{flex: 0.315}}>
                       <Image style ={styles.flatStylePic}
                           source={{uri: item.image}} resizeMode="stretch" >
                       </Image>
                 </View>
-                <View style={{flex:0.66, flexDirection:'column'}}>
+                <LinearGradient style={{flex:0.685, flexDirection:'column', marginLeft:0.5,
+              borderBottomRightRadius:14, borderTopRightRadius:14, marginBottom:1.5, marginTop:0.5,
+              }} colors={['#a1ffce','#faffd1' ]} >
                       <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
                         {item.subject}</Text>
                       <View style={{height:0.7, backgroundColor:'gray'}}></View>
@@ -121,7 +125,7 @@ class DeviceList extends React.Component {
                                     </MaterialCommunityIcons>
                               </TouchableOpacity>
                       </View>
-                </View>
+                </LinearGradient>
             </View>   
        </TouchableOpacity>
       );
@@ -134,7 +138,7 @@ class DeviceList extends React.Component {
         </View>
     )}
     return (
-        <View style={styles.container}>
+        <LinearGradient style={styles.container} colors={['#ffba00','#64f38c']}>
           <FlatList style={{flex:1}}
                     data={this.state.dataSource.ads}
                     renderItem={this.RenderList}
@@ -149,14 +153,14 @@ class DeviceList extends React.Component {
                     onEndReachedThreshold={0.4}
                     onEndReached={this.handleLoadMore.bind(this)}>
           </FlatList>
-      </View>
+      </LinearGradient>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F8FF',
+  //  backgroundColor: '#F8F8FF',
     //marginTop:10,
   },
   flatDetail: {

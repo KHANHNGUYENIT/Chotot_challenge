@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default class NotificationScreen extends React.Component {
   render() {
     return (
-      <Text>Thông báo</Text>
+      <LinearGradient style={styles.container} colors={['#ffba00','#64f38c']}>
+
+      </LinearGradient>
     );
   }
 }
@@ -26,7 +29,7 @@ NotificationScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
+   // paddingTop: 15,
+    //backgroundColor: '#fff',
   },
 });

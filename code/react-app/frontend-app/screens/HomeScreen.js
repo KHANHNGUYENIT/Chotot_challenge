@@ -33,7 +33,6 @@ export default class HomeScreen extends React.Component {
     super(props);
    // this.getApi = this.getApi.bind(this);
     this.state = {
-<<<<<<< HEAD
       loading: true,
     //  dataList: [],
       dataBDS:[],
@@ -70,17 +69,6 @@ getApi = ()=>{
              this.getApi();
 }
  
-=======
-      tabCurrent: 1,
-      data: []
-    }
-  }
-
-  componentDidMount(){
-    // this.getData();
-  }
-
->>>>>>> c0b264092f48380830afe1ffb012d762acbced23
   renderList = ({ item }) => {
     return (
       <TouchableWithoutFeedback key={item.ad_id} onPress={() => this.onPress(item)}>
@@ -122,9 +110,11 @@ getApi = ()=>{
 
   onPress = (item) =>{
     this.props.navigation.navigate('Details', {data: item});}
+    
   onPressLink = (id) => {
      this.props.navigation.navigate('Profile', {data: id});
     }
+
   render() {
     return (
       <View style={styles.container}>
