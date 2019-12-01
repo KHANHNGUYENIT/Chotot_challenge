@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#F8F8FF',
+      backgroundColor: '#f4f4f4',
       justifyContent: 'center',
     },
     contain_search: {
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     containBtn:{
       flexDirection:"row",
       justifyContent:"center",
+      marginBottom:20
     },  
     button:{
       flexDirection:"row",
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
       paddingHorizontal:10
     },
     image:{
-      width:120,
-      height:140
+      width:100,
+      height:120
     },
     containItem:{
       justifyContent:"center",
@@ -75,11 +76,15 @@ const styles = StyleSheet.create({
       paddingHorizontal:10
     },
     header:{
-      color:"blue",
+      // color:"blue",
       fontWeight:"bold",
+      paddingTop:5,
+      paddingBottom: 15
     },
     link:{
-      color:"#ffa100"
+      color:"#ffa100",
+      paddingTop:5,
+      paddingBottom: 10
     },
     itemName:{
       paddingVertical:5,
@@ -90,14 +95,11 @@ const styles = StyleSheet.create({
     },
     viewFlatHome:{
       flex: 6,
-      marginTop:7,
-      marginBottom: 7,
-      marginLeft: 7,
-      marginRight:7,
+      margin: 7,
       borderRadius:14,
-
-      borderWidth:1,
-      borderColor: '#ffba00',
+      // borderBottomWidth: 3,
+      // borderTopWidth:3,
+      // borderColor: '#ffba00',
 
       
       elevation: 5, // Android

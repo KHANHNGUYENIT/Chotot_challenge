@@ -40,6 +40,9 @@ export default class RegisterScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View>
+          <Text style={styles.title}>ĐĂNG KÝ</Text>
+        </View>
+        <View>
           <FontAwesome icon="user" size={27}></FontAwesome>
           <TextInput style={styles.input} placeholder="Phone"
             onChangeText={val => {
@@ -73,14 +76,14 @@ export default class RegisterScreen extends React.Component {
 };
 
 RegisterScreen.navigationOptions = {
-  title: 'Đăng ký'
+  title: ''
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingVertical:30
   },
   input: {
     borderWidth: 1,
