@@ -10,6 +10,8 @@ import * as EVENT from '../apis/event';
 import { cloneDeep } from 'lodash';
 import * as eventName from '../constants/Event';
 import * as asyncStorage from '../constants/localStorage';
+import { AsyncStorage } from 'react-native';
+
 
 const { heigh, width } = Dimensions.get('window');
 

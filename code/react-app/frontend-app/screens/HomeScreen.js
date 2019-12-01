@@ -90,7 +90,7 @@ export default class HomeScreen extends React.Component {
       const jsonData = await data.json();
       this.setState({ dataDDT: jsonData });
       this.setLoading(false);
-      // console.log(jsonData);
+      console.log(jsonData);
     }).catch(error => {
       console.log(error);
     })
@@ -218,13 +218,13 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" loading={this.state.loading} />
-        </View>
-      );
-    }
+    // if (this.state.loading) {
+    //   return (
+    //     <View style={styles.container}>
+    //       <ActivityIndicator size="large" loading={this.state.loading} />
+    //     </View>
+    //   );
+    // }
     // if (this.state.hasErrored == true) {
     //   return (
     //     <View style={styles.container}>
