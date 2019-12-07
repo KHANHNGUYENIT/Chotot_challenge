@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/user');
 const jwtBlacklist = require('jwt-blacklist')(jwt);
+const constants = require('../../constants/common');
 
 exports.login =  (req, res, next) => {
     if (!req.body.password || !req.body.phone) {
@@ -34,7 +35,7 @@ exports.login =  (req, res, next) => {
                                 userId: result._id,
                                 role: result.role
                             }
-                            , process.env.JWT_SECRET, 
+                            , constants.JWT_SECRET, 
                             {
                                 // expiresIn: "1h" //"120" ~ 120ms, "30m" "10h", "2 days", "7d" "1y"
                             }

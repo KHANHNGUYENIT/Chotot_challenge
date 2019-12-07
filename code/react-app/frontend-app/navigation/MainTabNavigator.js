@@ -24,7 +24,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     AdDetail: AdDetailScreen,
-    Details:{ screen: DeviceDetail, navigationOptions: { tabBarVisible: false, } },
+    Details: { screen: DeviceDetail, navigationOptions: { tabBarVisible: false, } },
     Profile: DeviceList,
   },
   config
@@ -32,7 +32,7 @@ const HomeStack = createStackNavigator(
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Đi chợ',
-  tabBarOptions: { 
+  tabBarOptions: {
     activeTintColor: '#ffa100',
   },
   tabBarIcon: ({ focused }) => (
@@ -52,16 +52,16 @@ HomeStack.path = '';
 const CategoryStack = createStackNavigator(
   {
     Category: CategoryScreen,
-    // Profile: DeviceList,
-    // Details: DeviceDetail,
-
+    Profile: DeviceList,
+    Details: { screen: DeviceDetail, navigationOptions: { tabBarVisible: false, } },
+    History: SavedItemScreen,
   },
   config
 );
 
 CategoryStack.navigationOptions = {
   tabBarLabel: 'Danh mục',
-  tabBarOptions: { 
+  tabBarOptions: {
     activeTintColor: '#ffa100',
   },
   tabBarIcon: ({ focused }) => (
@@ -81,7 +81,7 @@ const NotificationStack = createStackNavigator(
 
 NotificationStack.navigationOptions = {
   tabBarLabel: 'Thông báo',
-  tabBarOptions: { 
+  tabBarOptions: {
     activeTintColor: '#ffa100',
   },
   tabBarIcon: ({ focused }) => (
@@ -100,7 +100,7 @@ const MessageStack = createStackNavigator(
 
 MessageStack.navigationOptions = {
   tabBarLabel: 'Tin nhắn',
-  tabBarOptions: { 
+  tabBarOptions: {
     activeTintColor: '#ffa100',
   },
   tabBarIcon: ({ focused }) => (
@@ -122,7 +122,7 @@ const PersonalStack = createStackNavigator(
 
 PersonalStack.navigationOptions = {
   tabBarLabel: 'Cá nhân',
-  tabBarOptions: { 
+  tabBarOptions: {
     activeTintColor: '#ffa100',
   },
   tabBarIcon: ({ focused }) => (

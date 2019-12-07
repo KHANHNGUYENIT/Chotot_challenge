@@ -3,17 +3,19 @@ const app = express();
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
+const constants = require('./constants/common');
 
 
-if (process.env.NODE_ENV !== 'production') {
+
+if (constants.NODE_ENV !== 'production') {
     //require('dotenv').load();
     require('dotenv').config();
 }
 
 // Connect DB
-const mongooseConnectionStr = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+const mongooseConnectionStr =`mongodb+srv://${constants.DB_USERNAME}:${constants.DB_PASSWORD}@${constants.DB_HOST}/${constants.DB_NAME}?retryWrites=true&w=majority`;
+//const mongooseConnectionStr = `mongodb://${constants.DB_USERNAME}:${constants.DB_PASSWORD}@${constants.DB_HOST}:${constants.DB_PORT}/${constants.DB_NAME}`
 mongoose.connect(mongooseConnectionStr, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true  });
 
 // Some untilities
@@ -37,10 +39,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
-const testRoutes = require('./api/routes/test');
+const testRoutes = require('./api/routes/events');
 const authenticationRoutes = require('./api/routes/authentication');
 const registerRoute = require('./api/routes/register');
 const itemRoute = require('./api/routes/item');
+const eventRoute = require('./api/routes/events')
 
 // const infoRoutes = require('./api/routes/info');
 
@@ -48,9 +51,8 @@ const itemRoute = require('./api/routes/item');
 app.use('/api/v1/test', testRoutes);
 app.use('/api/v1/register', registerRoute);
 app.use('/api/v1/authentication', authenticationRoutes);
-app.use('/api/v1/item',itemRoute);
-
-// app.use('/api/v1/info', infoRoutes);
+app.use('/api/v1/item', itemRoute);
+app.use('/api/v1/events', eventRoute);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');

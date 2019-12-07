@@ -1,4 +1,6 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {
   Image,
   Platform,
@@ -9,25 +11,73 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { AsyncStorage } from 'react-native';
+import requestApi from '../utilities/request';
+import * as AUTHENTICATION_API from '../apis/authentication';
+import * as asyncStorage from '../constants/localStorage';
+import { cloneDeep, pick } from 'lodash';
+import * as authenticationActionCreators from '../actions/authentication';
 
-export default class PersonalScreen extends React.Component {
+
+class PersonalScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: {},
+      // isLogin: false
+    }
+  }
+
+  componentDidMount() {
   }
 
   eventLogin = () => {
     this.props.navigation.navigate('Login');
   }
-  eventSaved = ()  => {
+  eventSaved = () => {
     this.props.navigation.navigate('History');
   }
+
+  eventLogout = () => {
+    let api = cloneDeep(AUTHENTICATION_API.logout);
+    requestApi(api).then(async (data) => {
+      let jsonData = await data.json();
+      if (jsonData) {
+        this.props.dispatchAuthentication.logout();
+      }
+    })
+    .catch(error=>{
+
+    })
+  }
+
+  getStyle = (isLogin) => {
+    return {
+      display: (isLogin ? 'none' : 'flex'), width: 100,
+      height: 35,
+      backgroundColor: "#ffa100",
+      borderRadius: 5,
+      alignItems: "center",
+      justifyContent: "center",
+      marginVertical: 10
+    }
+  }
+
   render() {
     return (
       <LinearGradient style={styles.container} colors={['#ffba00','#ffffff']}>
-        <View style={styles.container}>
-          <View style={styles.container1}>
-            <TouchableOpacity onPress={this.eventLogin}>
-              <Text>Đăng nhập</Text>
+        <View style={styles.container1}>
+          <View style={{ flex: 3 }}>
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={require('../assets/images/user.png')}
+            />
+            <Text>{this.props.state.authentication ? this.props.state.authentication.phone : ""}</Text>
+            <TouchableOpacity onPress={this.eventLogin} style={this.getStyle(this.props.state.authentication.isLoggedIn)}>
+              <Text style={styles.text}>Đăng nhập</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.eventLogout} style={this.getStyle(!(this.props.state.authentication.isLoggedIn))}>
+              <Text>Đăng xuất</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.eventSaved}>
               <Text>Sản phẩm đã thích</Text>
@@ -45,6 +95,9 @@ PersonalScreen.navigationOptions = {
   headerStyle: {
     backgroundColor: "#ffba00",
   },
+  tabBarOnPress: ({ navigation, defaultHandler }) => {
+    defaultHandler();
+  },
 };
 
 const styles = StyleSheet.create({
@@ -57,5 +110,27 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: "center",
     alignItems: "center",
+  },
+  btn: {
+    width: 100,
+    height: 35,
+    backgroundColor: "blue",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  text: {
+    color: "#ffffff"
   }
 });
+const mapStateToProps = (state) => {
+  return { state: pick(state, ['authentication']) }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return { 
+    dispatchAuthentication: bindActionCreators(authenticationActionCreators, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalScreen);

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 const SaltRounds= 10;
+
 exports.register = (req, res, next) => {
     if (!req.body.password) {
         res.status(500).json({

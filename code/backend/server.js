@@ -1,6 +1,7 @@
 const http = require('http');
 const app = require('./app');
-const port = process.env.PORT || 8080;
+const constants = require('./constants/common');
+const port = constants.PORT || 8080;
 
 const server = http.createServer(app);
 
