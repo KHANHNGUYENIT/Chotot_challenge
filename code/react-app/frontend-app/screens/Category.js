@@ -10,7 +10,7 @@ import {   StyleSheet,
   Alert,
   TextInput,
   View,} from 'react-native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import listDataItemCategory from '../DataTest/DataItemCategory';
@@ -41,14 +41,15 @@ class Category extends React.Component  {
     Alert("Feature will update soon!")
   }
   onPress = (id) => {
-    switch(id){
-      case 1 : this.props.navigation.navigate('Profile',{data: id});
-                break;
-      case 2: this.props.navigation.navigate('Profile',{data: id});
-              break;
-      default: //showAlert();
-                break;
-    }
+    this.props.navigation.navigate('Profile',{data: id});
+    // switch(id){
+    //   case 1 : this.props.navigation.navigate('Profile',{data: id});
+    //             break;
+    //   case 2: this.props.navigation.navigate('Profile',{data: id});
+    //           break;
+    //   default: //showAlert();
+    //             break;
+    // }
   }
 
     
@@ -57,10 +58,11 @@ class Category extends React.Component  {
               <View style={styles.container}>
                 <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#ffffff" translucent = {true}/>
                 <Search></Search>
-              <View style={{flex: 9}}>
-                  <ScrollView contentContainerStyle ={{  flexDirection:'row', justifyContent:'space-between' }}>
+                <LinearGradient style={styles.styleScrollview} colors={['#ffba00','#ffffff']}>
+                <ScrollView >
+                  <View style={styles.styleViewcontent}>
                     <View style={styles.viewtouch}>
-                    {listDataItemCategory.slice(1,centerData).map(item =>{return(
+                    {listDataItemCategory.slice(1,centerData).map(item =>{return(   
                             <TouchableOpacity style = {styles.touchview} onPress={() => this.onPress(item.id)}  key={item.id}>
                               <Image style = {styles.viewImage} source = {{uri: item.imageUrl}} key={item.id} ></Image>
                               <Text style = {styles.viewtext}> {item.name}</Text>
@@ -76,8 +78,9 @@ class Category extends React.Component  {
                               </TouchableOpacity> );
                           })}
                     </View>
-                  </ScrollView>
-                </View>
+                  </View>
+                 </ScrollView>
+                </LinearGradient>
               </View>
           );
         }
@@ -92,18 +95,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     
   },
   contain_search: {
     paddingTop: 8,
-    flex: 1,
+    flex: 0.1,
     width: "100%",
     backgroundColor: "#ffba00",
     flexDirection: "row",
     justifyContent:'center',
    // alignItems: 'center',
+   borderBottomWidth:1,
+   borderColor:"#645DAC"
+
   },
   input_search: {
     paddingTop: 8,
@@ -135,6 +141,7 @@ const styles = StyleSheet.create({
   },
   touchview:{
     flex:1,
+    flexDirection:'column',
     width:160, height: 170,
     marginTop:5,
     marginBottom: 5,
@@ -152,15 +159,25 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff'
     
   },
+  styleScrollview:{
+    flex:0.9,
+
+  },
+  styleViewcontent:{
+    flexDirection:'row', 
+    justifyContent:'space-between',
+  },
   viewtouch:{
-      justifyContent:'space-between',
+    flex:0.5,
+      // justifyContent:'space-between',
       marginLeft: 10,
       marginRight: 10,
       borderRadius:10,
   },
   viewtext:{
-    fontStyle:'normal',
+   // fontStyle:'normal',
     color: "#645DAC",
+   // fontWeight:400,
     flex: 0.2 ,width: 160,height:40,
     justifyContent:'center',
     alignItems:'center',

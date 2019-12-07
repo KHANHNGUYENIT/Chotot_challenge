@@ -25,7 +25,7 @@ var listDataItemCategory =[
     {
         id: 3,
         name: "Xe cộ",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/cho-tot-xe.png?v=1" ,
+        imageUrl: "https://autodaily.vn/imgthumb/du-lieu/2019/12/06/honda-sh-2020_690_365.jpg" ,
     },
     {
         id: 4,
@@ -35,12 +35,12 @@ var listDataItemCategory =[
     {
         id: 5,
         name: "Thú cưng",
-        imageUrl:"https://static.chotot.com/storage/marketplace/home/category/thu-cung.png" ,
+        imageUrl:"https://mbi.dkn.tv/wp-content/uploads/2017/01/cach-chon-va-nuoi-cho-con-chuan-muc.jpg" ,
     },
     {
         id: 6,
         name: "Tủ lạnh, Máy lạnh, Máy giặc",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/tu-lanh-may-giat.png" ,
+        imageUrl: "http://hcassistencia.produzindo.tk/wp-content/uploads/sites/41/2018/05/eletrodomestico.jpg" ,
     },
     {
         id: 7,
@@ -55,12 +55,12 @@ var listDataItemCategory =[
     {
         id: 9,
         name: "Giải trí, Thể thao, Sở thích",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/giai-tri-the-thao-so-thich.png" ,
+        imageUrl: "http://hocdan.edu.vn/wp-content/uploads/2018/10/hoc-dan-guitar.jpg" ,
     },
     {
         id: 10,
         name: "Thời trang, Đồ dùng cá nhân",
-        imageUrl: "https://static.chotot.com/storage/marketplace/home/category/thoi-trang-do-dung-ca-nhan.png" ,
+        imageUrl: "http://canada.net.vn/wp-content/uploads/2018/08/C%C3%A1c-%C4%91%E1%BB%93-d%C3%B9ng-v%E1%BB%87-sinh-c%C3%A1-nh%C3%A2n-kh%C3%B4ng-th%E1%BB%83-thi%E1%BA%BFu.jpg" ,
     },
     {
         id: 11,

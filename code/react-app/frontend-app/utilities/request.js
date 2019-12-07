@@ -8,7 +8,7 @@ const requestApi = async (api) =>{
     api.url = URL.REACT_APP_API_URL + api.url;
     api.request.headers = {
         ...api.request.headers,
-        'Authorization' : 'Bearer' + await AsyncStorage.getItem(TOKEN)
+        'Authorization' : 'Bearer ' + await AsyncStorage.getItem(TOKEN)
     }
     console.log(api);
     return await fetch(api.url,api.request);

@@ -1,5 +1,5 @@
-export const saveEvent = {
-    url: '/api/v1/event/save',
+export const creatEvent = {
+    url: '/api/v1/events/create',
     request:
     {
         method: 'POST',

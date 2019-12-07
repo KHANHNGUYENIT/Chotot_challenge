@@ -7,11 +7,13 @@ import {
     TouchableOpacity,
     View,
   } from 'react-native';
-
+  import { LinearGradient } from 'expo-linear-gradient';
 export default class MessageScreen extends React.Component {
   render() {
     return (
-      <Text>Thông báo</Text>
+      <LinearGradient style={styles.container} colors={['#ffba00','#ffffff']}>
+
+      </LinearGradient>
     );
   }
 }
