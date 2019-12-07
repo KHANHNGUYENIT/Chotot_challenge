@@ -54,7 +54,7 @@ class DeviceList extends React.Component {
                       .catch(error=>console.log(error))
                       break;
       case 2:       this.props.navigation.setParams({ otherParam: 'Đồ Điện Tử' })
-                    fetch("https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000")
+                    fetch("https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000&limit=60&st=s,k")
                     .then(response => response.json())
                     .then((responseJson)=> {
                       this.setState({
@@ -98,18 +98,13 @@ class DeviceList extends React.Component {
  
     }
   RenderList =  ({item }) => {
-
       return (
         <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={()=>this.onPress(item)} >
             <View style={{flexDirection: 'row' }}>
-                <View  style={{flex: 0.315}}>
-                      <Image style ={styles.flatStylePic}
-                          source={{uri: item.image}} resizeMode="stretch" >
-                      </Image>
-                </View>
-                <LinearGradient style={{flex:0.685, flexDirection:'column', marginLeft:0.5,
-              borderBottomRightRadius:14, borderTopRightRadius:14, marginBottom:1.5, marginTop:0.5,
-              }} colors={['#a1ffce','#faffd1' ]} >
+                <Image style ={styles.flatStylePic}
+                    source={{uri: item.image}} resizeMode="stretch" >
+                </Image>
+                <View style={styles.styleText}>
                       <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
                         {item.subject}</Text>
                       <View style={{height:0.7, backgroundColor:'gray'}}></View>
@@ -125,7 +120,7 @@ class DeviceList extends React.Component {
                                     </MaterialCommunityIcons>
                               </TouchableOpacity>
                       </View>
-                </LinearGradient>
+               </View>
             </View>   
        </TouchableOpacity>
       );
@@ -138,7 +133,7 @@ class DeviceList extends React.Component {
         </View>
     )}
     return (
-        <LinearGradient style={styles.container} colors={['#ffba00','#64f38c']}>
+        <LinearGradient style={styles.container} colors={['#ffba00','#ffffff']}>
           <FlatList style={{flex:1}}
                     data={this.state.dataSource.ads}
                     renderItem={this.RenderList}
@@ -186,24 +181,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   flatStylePic: {
+    flex: 0.315,
     width:120, height: 109,
-    borderTopLeftRadius:14,
-    borderBottomLeftRadius: 14,
+    // borderTopLeftRadius:14,
+    // borderBottomLeftRadius: 14,
+    borderRadius: 14,
     marginBottom:1,
   },
   styleTextSubject: {
     //  flex: 0.45,
       fontSize: 15,
+      marginLeft:7,
   },
   styleTextPrice: {
     //flex: 0.35,
     fontSize: 15, 
-    color: 'red'
+    color: 'red',
+    marginLeft:7,
   },
   styleTextAddress: {
     //flex: 0.15,
     fontSize:10,
     alignItems:'flex-end',
+    marginLeft:7,
   },
   loader:{
     flex: 1,
@@ -211,6 +211,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff"
    },
-
+  styleText:{
+    
+    flex:0.685, flexDirection:'column', marginLeft:0.5,
+     borderBottomRightRadius:14, borderTopRightRadius:14, marginBottom:1.5, marginTop:0.5,
+    // marginLeft:0.1,
+    // backgroundColor:'#00ffef',
+  }
 });
 export default DeviceList;

@@ -18,7 +18,7 @@ class DeviceDetail extends React.Component {
 componentDidMount(){
   const dataObject = this.props.navigation.getParam('data', 'some default value');
   this.setState({dataObject});
-  //console.log(dataObject);
+  console.log(dataObject);
 }
 onPress = (item) =>{
   this.props.navigation.navigate('History', {data: item});}

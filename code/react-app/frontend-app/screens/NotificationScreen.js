@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default class NotificationScreen extends React.Component {
   render() {
     return (
-      <LinearGradient style={styles.container} colors={['#ffba00','#64f38c']}>
+      <LinearGradient style={styles.container} colors={['#ffba00','#ffffff']}>
 
       </LinearGradient>
     );

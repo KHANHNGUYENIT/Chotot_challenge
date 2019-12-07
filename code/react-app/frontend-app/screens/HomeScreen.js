@@ -54,7 +54,7 @@ getApi = ()=>{
                .catch(error=>console.log(error))}
               
       
-              {fetch("https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000")
+              {fetch("https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000&limit=20&st=s,k")
               .then(response => response.json())
               .then((responseJson)=> {
                 this.setState({
