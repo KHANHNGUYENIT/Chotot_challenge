@@ -1,5 +1,5 @@
-var mongoose = require('mongoose'),
-  Events = require('../../models/event');;
+const mongoose = require('mongoose');
+const Events = require('../../models/event');
 
 exports.list_all_events = function(req, res, next) {
   Events.find({}, function(err, event) {
@@ -12,11 +12,16 @@ exports.list_all_events = function(req, res, next) {
 
 exports.create_a_event = function(req, res, next) {
   req.body['_id']= new mongoose.Types.ObjectId();
-  var new_event = new Events(req.body);
-  new_event.save(function(err, event) {
-    if (err)
-      res.send(err);
-    res.json(event);
+  let new_event = new Events(req.body);
+  new_event.save().then(result => {
+    res.status(200).json({
+      message: "Success"
+    })
+  })
+  .catch(err => {
+    res.status(500).json({
+      message: err.errmsg
+    })
   });
 };
 
