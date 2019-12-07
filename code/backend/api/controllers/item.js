@@ -37,8 +37,8 @@ exports.item = (req, res, next) => {
         })
       }
       if(Boolean(sort_distance)) {
-        parseBody.ads.sort((a,b)=>{
-          return  a.distance>b.distance;
+        parseBody.ads= parseBody.ads.sort(function(a,b){
+          return  (a.distance> b.distance)?1:(a.distance < b.distance)?-1:0;
         })
       }
       res.send(parseBody);
