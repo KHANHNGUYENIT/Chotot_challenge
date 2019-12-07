@@ -1,4 +1,6 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {
   Image,
   Platform,
@@ -11,19 +13,20 @@ import { AsyncStorage } from 'react-native';
 import requestApi from '../utilities/request';
 import * as AUTHENTICATION_API from '../apis/authentication';
 import * as asyncStorage from '../constants/localStorage';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, pick } from 'lodash';
+import * as authenticationActionCreators from '../actions/authentication';
 
-export default class PersonalScreen extends React.Component {
+
+class PersonalScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {},
-      isLogin: false
+      // isLogin: false
     }
   }
 
   componentDidMount() {
-    this.getUser();
   }
 
   eventLogin = () => {
@@ -38,35 +41,12 @@ export default class PersonalScreen extends React.Component {
     requestApi(api).then(async (data) => {
       let jsonData = await data.json();
       if (jsonData) {
-        this.removeItemValue(asyncStorage.TOKEN);
-        this.removeItemValue("USER");
-        this.setState({ user: {}, isLogin: false });
+        this.props.dispatchAuthentication.logout();
       }
     })
-  }
+    .catch(error=>{
 
-  async removeItemValue(key) {
-    try {
-      await AsyncStorage.removeItem(key);
-      return true;
-    }
-    catch (exception) {
-      return false;
-    }
-  }
-
-  getUser = async () => {
-    try {
-      const user = await AsyncStorage.getItem('USER');
-      const userObj = JSON.parse(user);
-      this.setState({
-        user: userObj,
-        isLogin: true
-      });
-      console.log('user', user);
-    } catch (error) {
-      console.log(error.message);
-    }
+    })
   }
 
   getStyle = (isLogin) => {
@@ -90,11 +70,11 @@ export default class PersonalScreen extends React.Component {
               style={{ width: 100, height: 100 }}
               source={require('../assets/images/user.png')}
             />
-            <Text>{this.state.user ? this.state.user.phone : ""}</Text>
-            <TouchableOpacity onPress={this.eventLogin} style={this.getStyle(this.state.isLogin)}>
+            <Text>{this.props.state.authentication ? this.props.state.authentication.phone : ""}</Text>
+            <TouchableOpacity onPress={this.eventLogin} style={this.getStyle(this.props.state.authentication.isLoggedIn)}>
               <Text style={styles.text}>Đăng nhập</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.eventLogout} style={this.getStyle(!this.state.isLogin)}>
+            <TouchableOpacity onPress={this.eventLogout} style={this.getStyle(!(this.props.state.authentication.isLoggedIn))}>
               <Text>Đăng xuất</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.eventSaved}>
@@ -114,7 +94,6 @@ PersonalScreen.navigationOptions = {
     backgroundColor: "#ffba00",
   },
   tabBarOnPress: ({ navigation, defaultHandler }) => {
-    console.log('aaaa');
     defaultHandler();
   },
 };
@@ -142,3 +121,14 @@ const styles = StyleSheet.create({
     color: "#ffffff"
   }
 });
+const mapStateToProps = (state) => {
+  return { state: pick(state, ['authentication']) }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return { 
+    dispatchAuthentication: bindActionCreators(authenticationActionCreators, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalScreen);

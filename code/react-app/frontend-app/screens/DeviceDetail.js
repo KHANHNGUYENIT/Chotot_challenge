@@ -1,4 +1,6 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   View, Text, StyleSheet,
   ScrollView, Dimensions,
@@ -7,10 +9,12 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons, Feather, Entypo } from '@expo/vector-icons';
 import * as EVENT from '../apis/event';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, pick } from 'lodash';
 import * as eventName from '../constants/Event';
 import * as asyncStorage from '../constants/localStorage';
 import { AsyncStorage } from 'react-native';
+import * as authenticationActionCreators from '../actions/authentication';
+import requestApi from '../utilities/request';
 
 
 const { heigh, width } = Dimensions.get('window');
@@ -44,34 +48,37 @@ class DeviceDetail extends React.Component {
     }
   }
 
-  saveEvent = (ad_id,eventName)=>{
-    let api = cloneDeep(EVENT.saveEvent);
-    api.body = JSON.stringify({
+  saveEvent = (ad_id, eventName) => {
+    const userId = this.props.state.authentication.userId;
+    let api = cloneDeep(EVENT.creatEvent);
+    api.request.body = JSON.stringify({
       ad_id: ad_id,
-      user_fingerprint: "d59c9611-760e-4c7a-baac-a72ac5000680",
+      user_fingerprint: userId,
       event_name: eventName,
-      timestamp: + new Date()
     });
 
-    requestApi(api).then(async(data)=>{
+    requestApi(api).then(async (data) => {
       let jsonData = await data.json();
       console.log(data);
     })
-    .catch((error)=>{
-      console.log(error);
-    })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
-  eventCall = (ad_id)=>{
-    this.saveEvent(ad_id,eventName.CALL_CLICK);
+  eventCall = (ad_id) => {
+    console.log(ad_id);
+    this.saveEvent(ad_id, eventName.CALL_CLICK);
   }
 
-  eventSendSMS = (ad_id)=>{
-    this.saveEvent(ad_id,eventName.SMS_CLICK);
+  eventSendSMS = (ad_id) => {
+    console.log(ad_id);
+    this.saveEvent(ad_id, eventName.SMS_CLICK);
   }
 
-  eventChat = (ad_id)=>{
-    this.saveEvent(ad_id,eventName.CHAT_CLICK);
+  eventChat = (ad_id) => {
+    console.log(ad_id);
+    this.saveEvent(ad_id, eventName.CHAT_CLICK);
   }
 
   render() {
@@ -99,42 +106,39 @@ class DeviceDetail extends React.Component {
           </View>
           <View style={{ height: 0.7, backgroundColor: 'gray', marginTop: 5 }}></View>
         </View>
-        <View style={styles.styleViewInfo}>
-          <View style={styles.styleStatus}>
-            <Text style={{ fontSize: 16, color: 'gray' }}>Trạng thái |</Text>
-            <Text style={{ fontSize: 16, color: 'blue' }}>  {this.state.dataObject.condition_ad_name}</Text>
-          </View>
-          <View style={{ height: 0.7, backgroundColor: 'gray', marginVertical: 5 }}></View>
-          <View style={styles.styleStatus}>
+        <View style={styles.stylePerson}>
+          <Image style={styles.styleImagePic} source={{ uri: this.state.dataObject.avatar }} resizeMode="stretch">
+          </Image>
+          <View>
+            <Text style={styles.styleName} numberOfLines={2} ellipsizeMode={"tail"}>
+              {this.state.dataObject.account_name}</Text>
+            <View style={styles.styleStatus}>
+              <Text style={{ fontSize: 16, color: 'gray' }}>Trạng thái: </Text>
+              <Text style={{ fontSize: 16, color: 'blue' }}>  {this.state.dataObject.condition_ad_name}</Text>
+            </View>
             <Text style={{ fontSize: 16, color: 'gray' }} numberOfLines={2} ellipsizeMode={"tail"}>
-              Địa điểm |
+              Địa điểm:
                         <Text style={{ fontSize: 16, color: 'black' }}>
                 {this.state.dataObject.ward_name},{this.state.dataObject.area_name},
                               {this.state.dataObject.region_name}.</Text>
             </Text>
           </View>
         </View>
-        <View style={styles.stylePerson}>
-          <Image style={styles.styleImagePic} source={{ uri: this.state.dataObject.avatar }} resizeMode="stretch">
-          </Image>
-          <Text style={styles.styleName} numberOfLines={2} ellipsizeMode={"tail"}>
-            {this.state.dataObject.account_name}</Text>
-        </View>
-        <View style={{ height: 0.7, backgroundColor: 'gray'}}></View>
+        <View style={{ height: 0.7, backgroundColor: 'gray' }}></View>
         <View style={styles.styleDescription}>
           <Text style={{ fontSize: 18, color: 'gray' }}>Thông tin sản phẩm:</Text>
           <Text style={styles.styleBody}>{this.state.dataObject.body}</Text>
         </View>
         <View style={styles.containBtn}>
-          <TouchableOpacity style={styles.btn} onPress={() => this.eventCall(this.state.dataObject.id_ad)}>
+          <TouchableOpacity style={styles.btn} onPress={() => this.eventCall(this.state.dataObject.ad_id)}>
             <Feather name="phone-call" size={27} color="#fff"></Feather>
             <Text style={styles.textBtn}>Gọi điện</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={() => this.eventSendSMS(this.state.dataObject.id_ad)}>
+          <TouchableOpacity style={styles.btn} onPress={() => this.eventSendSMS(this.state.dataObject.ad_id)}>
             <Feather name="message-circle" size={27} color="#fff"></Feather>
             <Text style={styles.textBtn}>Gửi SMS</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={() => this.eventChat(this.state.dataObject.id_ad)}>
+          <TouchableOpacity style={styles.btn} onPress={() => this.eventChat(this.state.dataObject.ad_id)}>
             <Entypo name="chat" size={27} color="#fff"></Entypo>
             <Text style={styles.textBtn}>Chat</Text>
           </TouchableOpacity>
@@ -150,6 +154,7 @@ DeviceDetail.navigationOptions = {
   headerStyle: {
     backgroundColor: "#ffba00",
   },
+  tabBarVisible: false,
 };
 
 const styles = StyleSheet.create({
@@ -275,4 +280,15 @@ const styles = StyleSheet.create({
     paddingLeft: 4
   }
 });
-export default DeviceDetail;
+
+const mapStateToProps = (state) => {
+  return { state: pick(state, ['authentication']) }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchAuthentication: bindActionCreators(authenticationActionCreators, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceDetail);

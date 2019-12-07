@@ -1,40 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, AsyncStorage ,ActivityIndicator} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { } from '../constants/Colors';
-import { cloneDeep } from 'lodash';
+import { cloneDeep,pick } from 'lodash';
+import * as authenticationActionCreators from '../actions/authentication';
 import requestApi from '../utilities/request';
 import * as AUTHENTICATION_API from '../apis/authentication';
 import * as asyncStorage from '../constants/localStorage';
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor() {
     super();
-    this.state = {
-      phone: "",
-      passWord: ""
-    }
+    // this.state = {
+    //   phone: "",
+    //   passWord: ""
+    // }
   }
 
   eventLogin = () => {
+    this.props.dispatchAuthentication.loading();
     let api = cloneDeep(AUTHENTICATION_API.login);
-
     api.request.body = JSON.stringify({
       phone: this.state.phone,
       password: this.state.passWord,
     });
-    console.log(api);
+    // console.log(api);
     requestApi(api)
       .then(async (data) => {
         var res = await data.json();
-
-        console.log(res);
-
-        this.storeUserInfo('USER',res.user);
-        this.storeToken(asyncStorage.TOKEN,res.token);
-
-        this.props.navigation.navigate('Home');
+        this.props.dispatchAuthentication.loggedIn(res.token, res.user);
+        console.log("----------------Login---------------")
+        console.log(this.props.state.authentication.userId);
+        this.props.navigation.navigate('Personal');
       }).catch((error) => {
+        this.props.dispatchAuthentication.unload();
         alert('Ban da nhap sai sdt hoac mat khau');
       });
   }
@@ -46,7 +47,7 @@ export default class LoginScreen extends React.Component {
       let jsonOfItem = await AsyncStorage.setItem(key, token);
       return jsonOfItem;
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   }
   storeUserInfo = async (key,user) => {
@@ -54,7 +55,7 @@ export default class LoginScreen extends React.Component {
       let t = await AsyncStorage.setItem(key, JSON.stringify(user));
       return t;
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   }
 
@@ -64,6 +65,13 @@ export default class LoginScreen extends React.Component {
 
 
   render() {
+    if (this.props.state.authentication.isLoading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" loading={this.state.loading} />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View>
@@ -149,3 +157,15 @@ const styles = StyleSheet.create({
   }
 
 });
+
+const mapStateToProps = (state) => {
+  return { state: pick(state, ['authentication']) }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return { 
+    dispatchAuthentication: bindActionCreators(authenticationActionCreators, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
