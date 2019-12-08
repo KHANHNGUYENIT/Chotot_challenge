@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   View, Text, StyleSheet,
   ScrollView, Dimensions,
-  Image,
-  TextInput, TouchableOpacity
+  Image, Platform ,Linking,
+  TextInput, TouchableOpacity,
 } from 'react-native';
 import { MaterialCommunityIcons, Feather, Entypo } from '@expo/vector-icons';
 import * as EVENT from '../apis/event';
@@ -24,7 +24,8 @@ class DeviceDetail extends React.Component {
     super();
     this.state = {
       dataObject: {},
-      user: {}
+      user: {},
+      
     };
   }
   componentDidMount() {
@@ -65,12 +66,22 @@ class DeviceDetail extends React.Component {
         console.log(error);
       })
   }
-
-  eventCall = (ad_id) => {
-    console.log(ad_id);
-    this.saveEvent(ad_id, eventName.CALL_CLICK);
-  }
-
+  eventCall = phone => {
+       // console.log('callNumber ----> ', `0`+phone);
+        const sdt = `0`+phone;
+        //console.log('callNumber ----> ', sdt);
+        let phoneNumber = ' ';
+        if (Platform.OS !== 'android') {
+        phoneNumber = `telprompt:${sdt}`;
+        }
+        else  {
+        phoneNumber = `tel:${sdt}`;
+        }
+        Linking.openURL(phoneNumber)
+        console.log(sdt);
+        this.saveEvent(phone, eventName.CALL_CLICK);
+    };
+   
   eventSendSMS = (ad_id) => {
     console.log(ad_id);
     this.saveEvent(ad_id, eventName.SMS_CLICK);
@@ -82,66 +93,68 @@ class DeviceDetail extends React.Component {
   }
 
   render() {
-    // console.log(dataObject);
     return (
       <ScrollView style={styles.container}>
+  
         <Image style={styles.styleImage}
           source={{ uri: this.state.dataObject.image }} resizeMode="stretch" >
         </Image>
 
         <View style={styles.styleViewName}>
-          <Text style={styles.styleName}>{this.state.dataObject.subject}</Text>
+           <Text style={styles.styleName}>{this.state.dataObject.subject}</Text>
           <View style={styles.styleViewOfPrice}>
-            <View style={styles.stylePrice_Time}>
-              <Text style={styles.stylePrice}>{this.state.dataObject.price_string}</Text>
-              <Text style={styles.styleTime}>{this.state.dataObject.date}</Text>
-            </View>
-            <View style={{ flex: 0.3, justifyContent: 'flex-end' }}>
-              <TouchableOpacity style={styles.styleButton}>
-                <Text style={{ fontSize: 15, marginRight: 5, color: 'red' }}>Lưu tin</Text>
-                <MaterialCommunityIcons name="heart-outline" size={18} color={'red'}>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
+              <View style={styles.stylePrice_Time}>
+                  <Text style={styles.stylePrice}>{this.state.dataObject.price_string}</Text>
+                  <Text style={styles.styleTime}>{this.state.dataObject.date}</Text>
+              </View>
+              <View style={{ flex: 0.3, justifyContent: 'flex-end' }}>
+                <TouchableOpacity style={styles.styleButton}>
+                  <Text style={{ fontSize: 15, marginRight: 5, color: 'red' }}>Lưu tin</Text>
+                  <MaterialCommunityIcons name="heart-outline" size={18} color={'red'}>
+                  </MaterialCommunityIcons>
+                </TouchableOpacity>
+              </View>
           </View>
           <View style={{ height: 0.7, backgroundColor: 'gray', marginTop: 5 }}></View>
         </View>
-        <View style={styles.stylePerson}>
-          <Image style={styles.styleImagePic} source={{ uri: this.state.dataObject.avatar }} resizeMode="stretch">
-          </Image>
-          <View>
-            <Text style={styles.styleName} numberOfLines={2} ellipsizeMode={"tail"}>
-              {this.state.dataObject.account_name}</Text>
-            <View style={styles.styleStatus}>
-              <Text style={{ fontSize: 16, color: 'gray' }}>Trạng thái: </Text>
-              <Text style={{ fontSize: 16, color: 'blue' }}>  {this.state.dataObject.condition_ad_name}</Text>
+        <View style={styles.infor}>
+            <View style={styles.stylePerson}>
+              <Image style={styles.styleImagePic} source={{ uri: this.state.dataObject.avatar }} resizeMode="contain">
+              </Image>
+              <View>
+                <Text style={styles.styleName} numberOfLines={2} ellipsizeMode={"tail"}>
+                  {this.state.dataObject.account_name}</Text>
+  
+              </View>
             </View>
-            <Text style={{ fontSize: 16, color: 'gray' }} numberOfLines={2} ellipsizeMode={"tail"}>
-              Địa điểm:
-                        <Text style={{ fontSize: 16, color: 'black' }}>
-                {this.state.dataObject.ward_name},{this.state.dataObject.area_name},
-                              {this.state.dataObject.region_name}.</Text>
-            </Text>
-          </View>
         </View>
         <View style={{ height: 0.7, backgroundColor: 'gray' }}></View>
         <View style={styles.styleDescription}>
-          <Text style={{ fontSize: 18, color: 'gray' }}>Thông tin sản phẩm:</Text>
-          <Text style={styles.styleBody}>{this.state.dataObject.body}</Text>
+            <Text style={{ fontSize: 16, color: 'gray' }}>Trạng thái: 
+              <Text style={{ marginLeft:5, fontSize: 16, color: 'black' }}>  {this.state.dataObject.condition_ad_name}</Text>
+            </Text>
+            <Text style={{ fontSize: 16, color: 'gray' }} numberOfLines={2} ellipsizeMode={"tail"}>
+                Địa điểm: </Text>
+                          <Text style={{ marginLeft:5, fontSize: 16, color: 'black' }}>
+                  {this.state.dataObject.ward_name},{this.state.dataObject.area_name},
+                                {this.state.dataObject.region_name}.</Text>
+              
+              <Text style={{ fontSize: 18, color: 'gray' }}>Thông tin sản phẩm:</Text>
+              <Text style={styles.styleBody}>{this.state.dataObject.body}</Text>
         </View>
         <View style={styles.containBtn}>
-          <TouchableOpacity style={styles.btn} onPress={() => this.eventCall(this.state.dataObject.ad_id)}>
-            <Feather name="phone-call" size={27} color="#fff"></Feather>
-            <Text style={styles.textBtn}>Gọi điện</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={() => this.eventSendSMS(this.state.dataObject.ad_id)}>
-            <Feather name="message-circle" size={27} color="#fff"></Feather>
-            <Text style={styles.textBtn}>Gửi SMS</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={() => this.eventChat(this.state.dataObject.ad_id)}>
-            <Entypo name="chat" size={27} color="#fff"></Entypo>
-            <Text style={styles.textBtn}>Chat</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.btn} onPress={() => this.eventCall(this.state.dataObject.ad_id)}>
+              <Feather name="phone-call" size={27} color="#fff"></Feather>
+              <Text style={styles.textBtn}>Gọi điện</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btn} onPress={() => this.eventSendSMS(this.state.dataObject.ad_id)}>
+              <Feather name="message-circle" size={27} color="#fff"></Feather>
+              <Text style={styles.textBtn}>Gửi SMS</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btn} onPress={() => this.eventChat(this.state.dataObject.ad_id)}>
+              <Entypo name="chat" size={27} color="#fff"></Entypo>
+              <Text style={styles.textBtn}>Chat</Text>
+            </TouchableOpacity>
         </View>
       </ScrollView>
     );
@@ -166,7 +179,7 @@ const styles = StyleSheet.create({
   },
   styleImage: {
     width: width,
-    height: 290,
+    height: width,
   },
   styleViewName: {
     // height: 110,
@@ -178,10 +191,19 @@ const styles = StyleSheet.create({
     // marginRight: 7,
     padding: 5
   },
+  // styleName: {
+  //   //flex:0.5,
+  //   fontWeight: "bold",
+  //   fontSize: 20,
+  //   paddingBottom: 5
+  // color: '#645DAC',
+  // },
   styleName: {
-    //flex:0.5,
     fontSize: 20,
-    paddingBottom: 5
+    fontWeight: "bold",
+    paddingBottom: 5,
+    color: 'black',
+    justifyContent: 'center',
   },
   stylePrice_Time: {
     flexDirection: 'column',
@@ -222,6 +244,9 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     // height: 7,
   },
+  infor:{
+    flexDirection:'column',
+  },
   styleBody: {
     marginLeft: 4,
     marginTop: 3,
@@ -229,6 +254,7 @@ const styles = StyleSheet.create({
   },
   styleStatus: { flexDirection: 'row', },
   stylePerson: {
+    flex:0.5,
     flexDirection: 'row',
     backgroundColor: "#fff",
     // marginTop:7,
@@ -237,17 +263,17 @@ const styles = StyleSheet.create({
     // marginRight: 7,
     padding: 5
   },
+  styleButton:{
+    flex: 0.5,
+    flexDirection: 'row',
+  },
   styleImagePic: {
     width: 80,
     height: 80,
     borderRadius: 15,
     justifyContent: 'flex-start',
   },
-  styleName: {
-    fontSize: 20,
-    color: '#645DAC',
-    justifyContent: 'center',
-  },
+
   styleDescription: {
     backgroundColor: "#fff",
     // marginTop:7,

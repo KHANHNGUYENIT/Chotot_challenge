@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   View, FlatList, Image, TouchableOpacity
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons,MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
@@ -29,7 +29,9 @@ class DeviceList extends React.Component {
       loading: true,
       isRefreshing: false, //for pull to refresh
       dataSource: [],
-      error: ''
+      error: '',
+      visible: false,
+      
     };
   }
   GetData(page) {
@@ -73,6 +75,11 @@ class DeviceList extends React.Component {
 
   componentDidMount() {
     this.GetData(this.page);
+    setInterval(() => {
+      this.setState({
+        visible: !this.state.visible
+      });
+    }, 30000);
   }
 
   onPress = (item) => {
@@ -82,10 +89,12 @@ class DeviceList extends React.Component {
     //it will show indicator at the bottom of the list when data is loading otherwise it returns null
     if (!this.state.loading) return null;
     return (
-      <ActivityIndicator
-        style={{ color: '#000' }}
+      <ActivityIndicator 
+         style={{ color: '#000' }}
+ 
       />
     );
+ 
   };
   handleLoadMore = () => {
     if (!this.state.loading) {
@@ -103,19 +112,23 @@ class DeviceList extends React.Component {
                 <View style={styles.styleText}>
                       <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
                         {item.subject}</Text>
-                      <View style={{height:0.7, backgroundColor:'gray'}}></View>
-                      <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
-                      <View style={{height:0.7, backgroundColor:'gray'}}></View>
                       <View style={{flexDirection: 'row'}}>
-                              <Text style={styles.styleTextAddress} >|{item.region_name}</Text>
-                              <TouchableOpacity style={{justifyContent:'flex-end'}} 
-                              //onPress={changeColor}
-                             >
-                                    <MaterialCommunityIcons  style={{justifyContent:'flex-end'}}
-                                    name="heart-outline" size={25} color={'gray'}>
+                          <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
+                               <TouchableOpacity style={{marginLeft:5, flex:0.2, justifyContent:'flex-end'}}>
+                                    <MaterialCommunityIcons  
+                                    name="heart-outline" size={25} color={'red'}>
                                     </MaterialCommunityIcons>
                               </TouchableOpacity>
+                              {/* <TouchableOpacity style={{marginLeft:5, justifyContent:'flex-end'}} >
+                                    <MaterialCommunityIcons
+                                    name="heart" size={25} color={'red'}>
+                                    </MaterialCommunityIcons>
+                              </TouchableOpacity> */}
                       </View>
+                  <View style={{flexDirection: 'row'}}>
+                      <MaterialIcons style={{marginLeft:5}} name="location-on" color='gray' ></MaterialIcons>
+                      <Text style={styles.styleTextAddress} >{item.region_name}</Text>
+                  </View>
                </View>
             </View>   
        </TouchableOpacity>
@@ -130,36 +143,36 @@ class DeviceList extends React.Component {
     ); // true isRefreshing flag for enable pull to refresh indicator
 
   }
-  RenderList = ({ item }) => {
-    return (
-      <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={() => this.onPress(item)} >
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 0.34 }}>
-            <Image style={styles.flatStylePic}
-              source={{ uri: item.image }} resizeMode="stretch" >
-            </Image>
-          </View>
-          <View style={{ flex: 0.66, flexDirection: 'column' }}>
-            <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
-              {item.subject}</Text>
-            {/* <View style={{height:0.7, backgroundColor:'gray'}}></View> */}
-            <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
-            {/* <View style={{height:0.7, backgroundColor:'gray'}}></View> */}
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.styleTextAddress} >|{item.region_name}</Text>
-              <TouchableOpacity style={{ justifyContent: 'flex-end' }}
-              //onPress={changeColor}
-              >
-                <MaterialCommunityIcons style={{ justifyContent: 'flex-end' }}
-                  name="heart-outline" size={25} color={'gray'}>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
+  // RenderList = ({ item }) => {
+  //   return (
+  //     <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={() => this.onPress(item)} >
+  //       <View style={{ flexDirection: 'row' }}>
+  //         <View style={{ flex: 0.34 }}>
+  //           <Image style={styles.flatStylePic}
+  //             source={{ uri: item.image }} resizeMode="stretch" >
+  //           </Image>
+  //         </View>
+  //         <View style={{ flex: 0.66, flexDirection: 'column' }}>
+  //           <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
+  //             {item.subject}</Text>
+  //           {/* <View style={{height:0.7, backgroundColor:'gray'}}></View> */}
+  //           <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
+  //           {/* <View style={{height:0.7, backgroundColor:'gray'}}></View> */}
+  //           <View style={{ flexDirection: 'row' }}>
+  //             <Text style={styles.styleTextAddress} >|{item.region_name}</Text>
+  //             <TouchableOpacity style={{ justifyContent: 'flex-end' }}
+  //             //onPress={changeColor}
+  //             >
+  //               <MaterialCommunityIcons style={{ justifyContent: 'flex-end' }}
+  //                 name="heart-outline" size={25} color={'gray'}>
+  //               </MaterialCommunityIcons>
+  //             </TouchableOpacity>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     </TouchableOpacity>
+  //   );
+  // }
   render() {
     if (this.state.loading && this.page === 1) {
       return (
@@ -167,6 +180,7 @@ class DeviceList extends React.Component {
           <ActivityIndicator size="large" color="#0c9" />
         </View>
       )
+  
     }
     return (
         <LinearGradient style={styles.container} colors={['#ffba00','#ffffff']}>
@@ -194,11 +208,15 @@ const styles = StyleSheet.create({
   //  backgroundColor: '#F8F8FF',
     //marginTop:10,
   },
+  lottie: {
+    width: 100,
+    height: 100
+  },
   flatDetail: {
     height: 110,
     flex: 1, flexDirection: 'column',
     marginTop: 7,
-    marginBottom: 7,
+    //marginBottom: 7,
     // marginLeft: 7,
     // marginRight:7,
     // borderRadius:14,
@@ -221,16 +239,17 @@ const styles = StyleSheet.create({
     width:120, height: 109,
     // borderTopLeftRadius:14,
     // borderBottomLeftRadius: 14,
-    borderRadius: 14,
-    marginBottom:1,
+    // borderRadius: 14,
+    //marginBottom:1,
   },
   styleTextSubject: {
     //  flex: 0.45,
       fontSize: 15,
       marginLeft:7,
+      fontWeight: "bold",
   },
   styleTextPrice: {
-    //flex: 0.35,
+    flex: 0.8,
     fontSize: 15, 
     color: 'red',
     marginLeft:7,
