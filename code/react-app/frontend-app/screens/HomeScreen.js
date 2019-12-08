@@ -19,8 +19,6 @@ import { styles } from '../styles/styles';
 
 import { Search } from '../components/Search';
 import { Button } from '../components/Button';
-import listDataItemCategory from '../DataTest/DataItemCategory';
-
 import requestApi from '../utilities/request';
 import * as HOME_API from '../apis/home';
 import * as AUTHENTICATION_API from '../apis/authentication';

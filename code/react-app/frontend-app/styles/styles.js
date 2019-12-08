@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   contain_search: {
-    flex: 1,
+    flex: 0.1,
     width: "100%",
     backgroundColor: "#ffba00",
     flexDirection: "row",
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   image: {
+    borderRadius:4,
     width: 100,
     height: 120
   },

@@ -85,14 +85,53 @@ class DeviceList extends React.Component {
   GetData(dataId,userID, keySearch) {
     switch (dataId) {
       case 0: this.props.navigation.setParams({ otherParam: 'Có thể bạn quan tâm' })
-        this.getInterestedListItem(userID);
-        break;
+              this.getInterestedListItem(userID);
+              break;
       case 1: this.props.navigation.setParams({ otherParam: 'Bất động sản' })
-        this.fetchData(general.category.RealEstate,keySearch);
-        break;
-      case 2: this.props.navigation.setParams({ otherParam: 'Đồ Điện Tử' })
-        this.fetchData(general.category.ElectronicDevice,keySearch);
-        break;
+              this.fetchData(general.category.RealEstate,keySearch);
+              break;
+      case 2: this.props.navigation.setParams({ otherParam: 'Tủ lạnh, Máy lạnh, Máy giặc' })
+              this.fetchData(general.category.Diengiadung,keySearch);
+              break;
+      case 3: this.props.navigation.setParams({ otherParam: 'Đồ dùng văn phòng, Công nông nghiệp' })
+              this.fetchData(general.category.Vanphongpham,keySearch);
+              break;
+      case 4: this.props.navigation.setParams({ otherParam: 'Việc làm' })
+              this.fetchData(general.category.ViecLam,keySearch);
+              break;
+      case 5: this.props.navigation.setParams({ otherParam: 'Các loại khác' })
+              this.fetchData(general.category.Other,keySearch);
+              break;
+      case 6: this.props.navigation.setParams({ otherParam: 'Đồ Điện Tử' })
+              this.fetchData(general.category.ElectronicDevice,keySearch);
+              break;
+      case 7: this.props.navigation.setParams({ otherParam: 'Đồ gia dụng, Nội thất, Cây cảnh' })
+              this.fetchData(general.category.NoiThat,keySearch);
+              break;
+      case 8: this.props.navigation.setParams({ otherParam: 'Mẹ và bé' })
+              this.fetchData(general.category.MevaBe,keySearch);
+              break;
+      case 9: this.props.navigation.setParams({ otherParam: 'Giải trí, Thể thao, Sở thích' })
+                this.fetchData(general.category.Giaitri,keySearch);
+                break;
+      case 10: this.props.navigation.setParams({ otherParam: 'Tất cả danh mục' })
+                this.fetchData(general.category.ElectronicDevice,keySearch);
+                break;
+      case 11: this.props.navigation.setParams({ otherParam: 'Xe cộ' })
+                this.fetchData(general.category.Xeco,keySearch);
+                break;
+      case 12: this.props.navigation.setParams({ otherParam: 'Dịch vụ, Du lịch' })
+                this.fetchData(general.category.DichVu,keySearch);
+                break;
+      case 13: this.props.navigation.setParams({ otherParam: 'Thú cưng' })
+                this.fetchData(general.category.ThuCung,keySearch);
+                break;
+      case 14: this.props.navigation.setParams({ otherParam: 'Thời trang, Đồ dùng cá nhân' })
+                this.fetchData(general.category.Thoitrang,keySearch);
+                break;
+      case 15: this.props.navigation.setParams({ otherParam: 'Cho tặng miễn phí' })
+                this.fetchData(general.category.ElectronicDevice,keySearch);
+                break;
       default: break;
     }
   };
