@@ -14,20 +14,21 @@ import {   StyleSheet,
 
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import listDataItemCategory from '../DataTest/DataItemCategory';
+import { Search } from '../components/Search';
 
-const Search = props => {
-  return (
-    <View style={styles.contain_search}>
-      <TouchableOpacity style={{  marginLeft: 5, marginRight: 5, marginTop: 5, alignItems:'center', justifyContent:'center'}}>
-        <Ionicons name="md-arrow-round-back" size={27} color="#fff" />
-      </TouchableOpacity>
-      <TextInput style={styles.input_search} placeholder="Search..." />
-      <TouchableOpacity style={styles.icon}>
-        <FontAwesome name="shopping-bag" size={27} color="#fff" />
-      </TouchableOpacity>
-    </View>
-  );
-}
+// const Search = props => {
+//   return (
+//     <View style={styles.contain_search}>
+//       <TouchableOpacity style={{  marginLeft: 5, marginRight: 5, marginTop: 5, alignItems:'center', justifyContent:'center'}}>
+//         <Ionicons name="md-arrow-round-back" size={27} color="#fff" />
+//       </TouchableOpacity>
+//       <TextInput style={styles.input_search} placeholder="Search..." />
+//       <TouchableOpacity style={styles.icon}>
+//         <FontAwesome name="shopping-bag" size={27} color="#fff" />
+//       </TouchableOpacity>
+//     </View>
+//   );
+// }
 
 
 const centerData = Math.floor(listDataItemCategory.length /2);

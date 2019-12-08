@@ -5,13 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "Attach to packager",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "attach"
+        },
+        {
+            "name": "Debug in Exponent",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/node_modules/expo/AppEntry.js"
+            "platform": "exponent"
         }
     ]
 }

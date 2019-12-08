@@ -41,7 +41,8 @@ class HomeScreen extends React.Component {
       interestedList: [],
       headList: [],
       tabCurrent: 1,
-      userId: ""
+      userId: "",
+      keySearch: ""
     }
   }
 
@@ -84,6 +85,14 @@ class HomeScreen extends React.Component {
     this.getDataByTabId(tabId);
   }
 
+  setKeySearch = (key) => {
+    console.log('------------------key---------------')
+    console.log(key);
+    this.setState({
+      keySearch: key
+    })
+  }
+
   getData = async () => {
     let api = cloneDeep(HOME_API.getItem);
     api.url = api.url + "?cg=" + general.category.ElectronicDevice + "&limit="
@@ -96,6 +105,19 @@ class HomeScreen extends React.Component {
     }).catch(error => {
       console.log(error);
     })
+  }
+
+  getDataSearch = async () => {
+    let type = 0;
+    let keySearch = this.state.keySearch.toUpperCase();
+    console.log('--------------------search----------------');
+    console.log(keySearch);
+    if (keySearch.includes('ĐIỆN THOẠI') || keySearch.includes('IPHONE'))
+      type = 2;
+    if (keySearch.includes('PHÒNG') || keySearch.includes('NHÀ') || keySearch.includes('ĐẤT'))
+      type = 1;
+    this.props.navigation.navigate('Profile', { data: type, keySearch: this.state.keySearch });
+
   }
 
   getDataBDS = async () => {
@@ -134,23 +156,6 @@ class HomeScreen extends React.Component {
       const jsonData = await data.json();
       this.setState({ interestedList: jsonData });
     })
-    // fetch('http://118.69.225.72:5000/recommend', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     userID: userId,
-    //   }),
-    // })
-    // .then(async(data)=>{
-    //   let jsonData = await data.json();
-    //   console.log(jsonData);
-    // })
-    // .catch((error)=>{
-    //   console.log(error);
-    // })
   }
 
   getDataByTabId = (tabId) => {
@@ -170,8 +175,8 @@ class HomeScreen extends React.Component {
 
   getNearList = () => {
     let api = cloneDeep(HOME_API.getItem);
-    api.url = api.url + "?cg=" + general.category.ElectronicDevice + "&limit="
-      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+    api.url = api.url + "?" + "limit="
+      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance + '&sort=true';
     requestApi(api)
       .then(async (data) => {
         const jsonData = await data.json();
@@ -214,11 +219,11 @@ class HomeScreen extends React.Component {
   }
 
   onPress = (item) => {
-    this.props.navigation.navigate('Details', { data: item });
+    this.props.navigation.navigate('Details', { data: item, userId: this.props.state.authentication.userId });
     this.saveEvent(item.ad_id);
   }
   onPressLink = (id) => {
-    this.props.navigation.navigate('Profile', { data: id });
+    this.props.navigation.navigate('Profile', { data: id, keySearch: '' });
   }
 
   saveEvent = (ad_id) => {
@@ -257,7 +262,7 @@ class HomeScreen extends React.Component {
     // }
     return (
       <View style={styles.container}>
-        <Search></Search>
+        <Search eventSearch={() => { this.getDataSearch() }} setKeySearch={this.setKeySearch}></Search>
         <View style={{ flex: 9 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.viewFlatHome}>
@@ -295,22 +300,6 @@ class HomeScreen extends React.Component {
             </View>
             <View style={styles.viewFlatHome}>
               <View style={styles.headerGroup}>
-                <Text style={styles.header}>Bất động sản </Text>
-                <TouchableOpacity onPress={() => this.onPressLink(1)}>
-                  <Text style={styles.link}>Xem thêm</Text>
-                </TouchableOpacity>
-              </View>
-              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
-              <FlatList
-                data={this.state.dataBDS.ads}
-                renderItem={this.renderList}
-                keyExtractor={item => item.ad_id.toString()}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              />
-            </View>
-            <View style={styles.viewFlatHome}>
-              <View style={styles.headerGroup}>
                 <Text style={styles.header}>Đồ điện tử</Text>
                 <TouchableOpacity onPress={() => this.onPressLink(2)}>
                   <Text style={styles.link}>Xem thêm</Text>
@@ -319,6 +308,22 @@ class HomeScreen extends React.Component {
               {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
               <FlatList
                 data={this.state.dataDDT.ads}
+                renderItem={this.renderList}
+                keyExtractor={item => item.ad_id.toString()}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <View style={styles.viewFlatHome}>
+              <View style={styles.headerGroup}>
+                <Text style={styles.header}>Bất động sản </Text>
+                <TouchableOpacity onPress={() => this.onPressLink(1)}>
+                  <Text style={styles.link}>Xem thêm</Text>
+                </TouchableOpacity>
+              </View>
+              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
+              <FlatList
+                data={this.state.dataBDS.ads}
                 renderItem={this.renderList}
                 keyExtractor={item => item.ad_id.toString()}
                 horizontal={true}

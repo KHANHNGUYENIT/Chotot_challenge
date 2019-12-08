@@ -15,6 +15,7 @@ import * as asyncStorage from '../constants/localStorage';
 import { AsyncStorage } from 'react-native';
 import * as authenticationActionCreators from '../actions/authentication';
 import requestApi from '../utilities/request';
+import * as HOME_API from '../apis/home';
 
 
 const { heigh, width } = Dimensions.get('window');
@@ -25,15 +26,36 @@ class DeviceDetail extends React.Component {
     this.state = {
       dataObject: {},
       user: {},
-      
+      image: 'a',
+      distance: ''
     };
   }
   componentDidMount() {
-    const dataObject = this.props.navigation.getParam('data', 'some default value');
+    const data = this.props.navigation.getParam('data', 'some default value');
+    this.setState({
+      distance: data.distance
+    })
+    console.log("------------------------id------------------------");
+    this.getData(data.list_id);
     // console.log(dataObject);
-    this.setState({ dataObject });
-    console.log(dataObject);
+    // this.setState({ dataObject });
+    // console.log(dataObject);
     this.getUser();
+  }
+
+  getData = (id) => {
+    let api = cloneDeep(HOME_API.getItemDetail);
+    api.url = api.url + '?list_id=' + id;
+    requestApi(api).then(async data => {
+      let jsonData = await data.json();
+      this.setState({
+        dataObject: jsonData.ad,
+        image: jsonData.ad.images[0]
+      })
+    })
+      .catch(error => {
+        console.log('error');
+      })
   }
 
   getUser = async () => {
@@ -97,36 +119,46 @@ class DeviceDetail extends React.Component {
       <ScrollView style={styles.container}>
   
         <Image style={styles.styleImage}
-          source={{ uri: this.state.dataObject.image }} resizeMode="stretch" >
+          source={{ uri: this.state.image }} resizeMode="stretch" >
         </Image>
 
         <View style={styles.styleViewName}>
            <Text style={styles.styleName}>{this.state.dataObject.subject}</Text>
           <View style={styles.styleViewOfPrice}>
-              <View style={styles.stylePrice_Time}>
-                  <Text style={styles.stylePrice}>{this.state.dataObject.price_string}</Text>
-                  <Text style={styles.styleTime}>{this.state.dataObject.date}</Text>
-              </View>
-              <View style={{ flex: 0.3, justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.styleButton}>
-                  <Text style={{ fontSize: 15, marginRight: 5, color: 'red' }}>Lưu tin</Text>
-                  <MaterialCommunityIcons name="heart-outline" size={18} color={'red'}>
-                  </MaterialCommunityIcons>
-                </TouchableOpacity>
-              </View>
-          </View>
-          <View style={{ height: 0.7, backgroundColor: 'gray', marginTop: 5 }}></View>
-        </View>
-        <View style={styles.infor}>
-            <View style={styles.stylePerson}>
-              <Image style={styles.styleImagePic} source={{ uri: this.state.dataObject.avatar }} resizeMode="contain">
-              </Image>
-              <View>
-                <Text style={styles.styleName} numberOfLines={2} ellipsizeMode={"tail"}>
-                  {this.state.dataObject.account_name}</Text>
-  
+            <View style={styles.stylePrice_Time}>
+              <Text style={styles.stylePrice}>{this.state.dataObject.price_string}</Text>
+              <View style={styles.row}>
+                <Text style={styles.styleTime}>{this.state.dataObject.date}</Text>
+                <Text style={styles.styleTime}> | {this.state.distance} km</Text>
               </View>
             </View>
+            <View style={{ flex: 0.3, justifyContent: 'flex-end' }}>
+              <TouchableOpacity style={styles.styleButton}>
+                <Text style={{ fontSize: 15, marginRight: 5, color: 'red' }}>Lưu tin</Text>
+                <MaterialCommunityIcons name="heart-outline" size={18} color={'red'}>
+                </MaterialCommunityIcons>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={{ height: 0.7, backgroundColor: 'gray', marginTop: 5 }}></View>
+        <View style={styles.containInfo}>
+          <View style={styles.styleStatus}>
+            <Text style={{ fontSize: 16, color: 'gray' }}>Trạng thái: </Text>
+            <Text style={{ fontSize: 16, color: 'blue' }}>  {this.state.dataObject.condition_ad_name}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={{ fontSize: 16, color: 'gray' }} numberOfLines={2} ellipsizeMode={"tail"}>Địa điểm:</Text>
+            <Text style={{ fontSize: 16, color: 'black' }}>{this.state.dataObject.ward_name},{this.state.dataObject.area_name},{this.state.dataObject.region_name}.</Text>
+          </View>
+        </View>
+        <View style={{ height: 0.7, backgroundColor: 'gray', marginTop: 5 }}></View>
+        <View style={styles.stylePerson}>
+          <Image style={styles.styleImagePic} source={{ uri: this.state.dataObject.avatar }} resizeMode="stretch">
+          </Image>
+          <View>
+            <Text style={styles.styleName} numberOfLines={2} ellipsizeMode={"tail"}>{this.state.dataObject.account_name}</Text>
+          </View>
         </View>
         <View style={{ height: 0.7, backgroundColor: 'gray' }}></View>
         <View style={styles.styleDescription}>
@@ -252,7 +284,13 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginRight: 4,
   },
-  styleStatus: { flexDirection: 'row', },
+  styleStatus: { 
+    flexDirection: 'row', 
+    paddingBottom: 5
+  },
+  containInfo:{
+    padding: 5
+  },
   stylePerson: {
     flex:0.5,
     flexDirection: 'row',
@@ -272,6 +310,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 15,
     justifyContent: 'flex-start',
+    marginRight: 5
   },
 
   styleDescription: {
@@ -304,6 +343,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     paddingLeft: 4
+  },
+  row: {
+    flexDirection: "row"
   }
 });
 

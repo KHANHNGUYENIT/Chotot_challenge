@@ -12,10 +12,11 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#ffba00",
     flexDirection: "row",
-    paddingVertical: 10
+    justifyContent: "center",
+    paddingVertical: 5
   },
   input_search: {
-    borderRadius: 15,
+    borderRadius: 10,
     height: 30,
     width: "80%",
     borderWidth: 1,

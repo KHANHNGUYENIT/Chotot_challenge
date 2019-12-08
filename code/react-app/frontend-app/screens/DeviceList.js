@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   StyleSheet, Text,
   ActivityIndicator,
@@ -7,6 +9,12 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons,MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { general } from '../constants/general';
+import * as EVENT from '../apis/event';
+import { cloneDeep, pick } from 'lodash';
+import requestApi from '../utilities/request';
+import * as HOME_API from '../apis/home';
+import * as authenticationActionCreators from '../actions/authentication';
 
 
 class DeviceList extends React.Component {
@@ -22,54 +30,63 @@ class DeviceList extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.onPress = this.onPress.bind(this);
-    this.page = 1;
-    this.GetData = this.GetData.bind(this);
+    // this.onPress = this.onPress.bind(this);
+    // this.page = 1;
+    // this.GetData = this.GetData.bind(this);
     this.state = {
       loading: true,
       isRefreshing: false, //for pull to refresh
       dataSource: [],
       error: '',
       visible: false,
-      
+      lastPageReached: false,
+      offset: 0,
+      dataId:1,
+      userID:''
     };
   }
-  GetData(page) {
+
+  componentDidMount(){
     const dataId = this.props.navigation.getParam('data', 'some default value');
-    switch(dataId) { 
-      case 0:       this.props.navigation.setParams({ otherParam: 'Có thể bạn quan tâm' })
-                    fetch("https://gateway.chotot.com/v1/public/ad-listing?region_v2=3017&area_v2=301706&cg=1000&limit=20&st=s,k")
-                    .then(response => response.json())
-                    .then((responseJson)=> {
-                      this.setState({
-                      loading: false,
-                      dataSource: responseJson,
-                      })})
-                      .catch(error=>console.log(error))
-                      break;
-      case 1:       this.props.navigation.setParams({ otherParam: 'Bất động sản' })
-                    fetch("https://gateway.chotot.com/v1/public/ad-listing?region_v2=3017&area_v2=301706&cg=1000&limit=20&st=s,k")
-                    .then(response => response.json())
-                    .then((responseJson)=> {
-                      this.setState({
-                      loading: false,
-                      dataSource: responseJson,
-                      })})
-                      .catch(error=>console.log(error))
-                      break;
-      case 2:       this.props.navigation.setParams({ otherParam: 'Đồ Điện Tử' })
-                    fetch("https://gateway.chotot.com/v1/public/ad-listing?app_id=android&cg=5000&limit=60&st=s,k")
-                    .then(response => response.json())
-                    .then((responseJson)=> {
-                      this.setState({
-                      loading: false,
-                      dataSource: responseJson,
-                      })
-                      
-                    }) 
-                    .catch(error=>console.log(error))
-                    break;
-      default:      break;
+    const userID = this.props.navigation.getParam('userId');
+    const keySearch = this.props.navigation.getParam('keySearch');
+    this.setState({
+      dataId: dataId,
+      userID: userID
+    })
+    this.GetData(dataId,userID,keySearch);
+  }
+
+  setLoading = (isLoading) => {
+    this.setState({
+      loading: isLoading
+    })
+  }
+
+  setOffset = (newOffset) => {
+    this.setState({
+      offset: newOffset
+    })
+  }
+
+  setLastPageReached = (isLastPage) => {
+    this.setState({
+      lastPageReached: isLastPage
+    })
+  }
+
+  GetData(dataId,userID, keySearch) {
+    switch (dataId) {
+      case 0: this.props.navigation.setParams({ otherParam: 'Có thể bạn quan tâm' })
+        this.getInterestedListItem(userID);
+        break;
+      case 1: this.props.navigation.setParams({ otherParam: 'Bất động sản' })
+        this.fetchData(general.category.RealEstate,keySearch);
+        break;
+      case 2: this.props.navigation.setParams({ otherParam: 'Đồ Điện Tử' })
+        this.fetchData(general.category.ElectronicDevice,keySearch);
+        break;
+      default: break;
     }
   };
 
@@ -81,10 +98,63 @@ class DeviceList extends React.Component {
       });
     }, 30000);
   }
+  fetchData = (category,keySearch) => {
+    let api = cloneDeep(HOME_API.getItem);
+    api.url = api.url + "?cg=" + category + "&limit="
+      + general.page.limit + "&o=" + this.state.offset + "&distance=" + general.page.distance + "&keysearch="+keySearch;
+    console.log('before fetch');
+    requestApi(api).then(async (data) => {
+      const jsonData = await data.json();
+      let oldData = this.state.dataSource;
+      if (jsonData.ads.length > 0) {
+        let newData = oldData.concat(jsonData.ads);
+        this.setState({ dataSource: newData });
+        this.setLoading(false);
+        this.setOffset(this.state.offset + 20);
+      }
+      else
+        this.setLastPageReached(true);
+      
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  getInterestedListItem = async (userId) => {
+    let api = cloneDeep(HOME_API.getInterestedItem);
+    api.request.body = JSON.stringify({
+      userID: userId,
+    });
+    requestApi(api).then(async (data) => {
+      const jsonData = await data.json();
+      this.setState({ interestedList: jsonData });
+    })
+  }
 
   onPress = (item) => {
     this.props.navigation.navigate('Details', { data: item });
+    this.saveEvent(item.ad_id);
   }
+
+  saveEvent = (ad_id) => {
+    const userId = this.props.state.authentication.userId;
+    console.log(userId);
+    let api = cloneDeep(EVENT.creatEvent);
+    api.request.body = JSON.stringify({
+      ad_id: ad_id,
+      user_fingerprint: userId,
+      event_name: eventName.CLASSIFYAD_CLICK
+    });
+
+    requestApi(api).then(async (data) => {
+      let jsonData = await data.json();
+      console.log(data);
+    })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   renderFooter = () => {
     //it will show indicator at the bottom of the list when data is loading otherwise it returns null
     if (!this.state.loading) return null;
@@ -135,12 +205,12 @@ class DeviceList extends React.Component {
       );
   };
   onRefresh() {
-    // this.GetData();
-    this.setState({
-      loading: true,
-      dataSource: { ...this.GetData(), }
-    }
-    ); // true isRefreshing flag for enable pull to refresh indicator
+    this.GetData(this.state.dataId,this.state.userID);
+    // this.setState({
+    //   loading: true,
+    //   dataSource: { ...this.GetData(), }
+    // }
+    // ); // true isRefreshing flag for enable pull to refresh indicator
 
   }
   // RenderList = ({ item }) => {
@@ -174,30 +244,29 @@ class DeviceList extends React.Component {
   //   );
   // }
   render() {
-    if (this.state.loading && this.page === 1) {
+    if (this.state.loading) {
       return (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#0c9" />
+          <ActivityIndicator size="large" color="#0c9" loading={this.state.loading}/>
         </View>
       )
   
     }
     return (
-        <LinearGradient style={styles.container} colors={['#ffba00','#ffffff']}>
-          <FlatList style={{flex:1}}
-                    data={this.state.dataSource.ads}
-                    renderItem={this.RenderList}
-                
-                    refreshing={this.state.isRefreshing}
-                    onRefresh={this.onRefresh.bind(this)}
-                      
-                    
-                    keyExtractor={item => item.ad_id.toString()}
-                    ItemSeparatorComponent={this.renderSeparator}
-                    ListFooterComponent={this.renderFooter.bind(this)}
-                    onEndReachedThreshold={0.4}
-                    onEndReached={this.handleLoadMore.bind(this)}>
-          </FlatList>
+      <LinearGradient style={styles.container} colors={['#ffba00', '#ffffff']}>
+        <FlatList style={{ flex: 1 }}
+          data={this.state.dataSource}
+          renderItem={this.RenderList}
+          refreshing={this.state.isRefreshing}
+          onRefresh={this.onRefresh.bind(this)}
+          keyExtractor={item => item.ad_id.toString()}
+          ItemSeparatorComponent={this.renderSeparator}
+          onEndReached={()=>{this.GetData(this.state.dataId,this.state.userID)}} onEndReachedThreshold={1}
+          ListFooterComponent={this.state.lastPageReached ? <Text>No more items</Text> : <ActivityIndicator
+            size="large"
+            loading={this.state.loading}
+          />}
+        />
       </LinearGradient>
     );
   }
@@ -205,7 +274,7 @@ class DeviceList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  //  backgroundColor: '#F8F8FF',
+    //  backgroundColor: '#F8F8FF',
     //marginTop:10,
   },
   lottie: {
@@ -235,8 +304,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   flatStylePic: {
-    flex: 0.315,
-    width:120, height: 109,
+    // flex: 0.315,
+    width: 120, height: 109,
     // borderTopLeftRadius:14,
     // borderBottomLeftRadius: 14,
     // borderRadius: 14,
@@ -252,26 +321,37 @@ const styles = StyleSheet.create({
     flex: 0.8,
     fontSize: 15, 
     color: 'red',
-    marginLeft:7,
+    marginLeft: 7,
   },
   styleTextAddress: {
     //flex: 0.15,
-    fontSize:10,
-    alignItems:'flex-end',
-    marginLeft:7,
+    fontSize: 10,
+    alignItems: 'flex-end',
+    marginLeft: 7,
   },
   loader: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff"
-   },
-  styleText:{
-    
-    flex:0.685, flexDirection:'column', marginLeft:0.5,
-     borderBottomRightRadius:14, borderTopRightRadius:14, marginBottom:1.5, marginTop:0.5,
+  },
+  styleText: {
+
+    flex: 0.685, flexDirection: 'column', marginLeft: 0.5,
+    borderBottomRightRadius: 14, borderTopRightRadius: 14, marginBottom: 1.5, marginTop: 0.5,
     // marginLeft:0.1,
     // backgroundColor:'#00ffef',
   }
 });
-export default DeviceList;
+
+const mapStateToProps = (state) => {
+  return { state: pick(state, ['authentication']) }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchAuthentication: bindActionCreators(authenticationActionCreators, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceList);

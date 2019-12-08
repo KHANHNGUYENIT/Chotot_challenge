@@ -24,3 +24,15 @@ export const getInterestedItem = {
       })
   }
 }
+
+export const getItemDetail = {
+  url: '/api/v1/item/detail',
+  request:
+  {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+  }
+}
