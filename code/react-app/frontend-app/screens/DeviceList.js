@@ -23,7 +23,7 @@ class DeviceList extends React.Component {
     return {
       title: params ? params.otherParam : '',
       headerStyle: {
-        backgroundColor: "#ffba00"
+        backgroundColor: "#ffba00",
       },
 
     };
@@ -41,7 +41,7 @@ class DeviceList extends React.Component {
       visible: false,
       lastPageReached: false,
       offset: 0,
-      dataId:1,
+      dataId: 1,
       userID:''
     };
   }
@@ -92,11 +92,6 @@ class DeviceList extends React.Component {
 
   componentDidMount() {
     this.GetData(this.page);
-    setInterval(() => {
-      this.setState({
-        visible: !this.state.visible
-      });
-    }, 30000);
   }
   fetchData = (category,keySearch) => {
     let api = cloneDeep(HOME_API.getItem);

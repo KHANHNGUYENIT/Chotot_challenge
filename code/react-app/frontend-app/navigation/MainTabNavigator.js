@@ -9,7 +9,7 @@ import MessageScreen from '../screens/MessageScreen';
 import PersonalScreen from '../screens/PersonalScreen';
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
-import AdDetailScreen from '../screens/AdDetailScreen';
+
 import DeviceDetail from '../screens/DeviceDetail';
 import DeviceList from '../screens/DeviceList';
 import CategoryScreen from '../screens/CategoryScreen';
@@ -23,7 +23,6 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    AdDetail: AdDetailScreen,
     Details: { screen: DeviceDetail, navigationOptions: { tabBarVisible: false, } },
     Profile: DeviceList,
   },
