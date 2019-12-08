@@ -44,8 +44,7 @@ const authenticationRoutes = require('./api/routes/authentication');
 const registerRoute = require('./api/routes/register');
 const itemRoute = require('./api/routes/item');
 const eventRoute = require('./api/routes/events')
-
-// const infoRoutes = require('./api/routes/info');
+const recommendRoute = require('./api/routes/recommend');
 
 // All routes here
 app.use('/api/v1/test', testRoutes);
@@ -53,7 +52,7 @@ app.use('/api/v1/register', registerRoute);
 app.use('/api/v1/authentication', authenticationRoutes);
 app.use('/api/v1/item', itemRoute);
 app.use('/api/v1/events', eventRoute);
-
+app.use('/api/v1/recommend',recommendRoute);
 app.use((req, res, next) => {
     const error = new Error('Not Found');
     error.status = 404;

@@ -1,6 +1,6 @@
 module.exports = Object.freeze( {
     NODE_ENV: 'development',
-    PORT: 8080,
+    PORT: 5000,
     ROOT_DOMAIN: 'chotot',
     
     PRODUCT_DOMAIN: 'product',
@@ -20,5 +20,5 @@ module.exports = Object.freeze( {
     API_PORT: 443,
 
     API_DATA: '118.69.225.72',
-    API_DATA_PORT: 8000
+    API_DATA_PORT: 27017
 })
