@@ -11,6 +11,12 @@ exports.item = (req, res, next) => {
   let distance = req.param('distance') || DISTANCE;
   let sort_distance= req.param('sort') || false;
   let keyword = req.param('keysearch');
+  let is_shop = req.param('is_shop');
+
+  if(is_shop){
+    is_shop = '&f=c';
+  }
+  else is_shop = ''
   if(cg)
     cg = '&cg='+cg;
   else
@@ -22,7 +28,7 @@ exports.item = (req, res, next) => {
 
   let options = {
     host: constants.API_HOST,
-    path: '/v1/public/ad-listing?app_id=android'+ cg + '&limit=' + limit + '&o=' + offset+keyword,
+    path: '/v1/public/ad-listing?app_id=android'+ cg + '&limit=' + limit + '&o=' + offset+keyword+is_shop,
     port: 443,
     method: 'GET'
   }
@@ -34,8 +40,11 @@ exports.item = (req, res, next) => {
     });
     response.on('end', function () {
       let parseBody=JSON.parse(body);
+      let check_tag= cg.includes('&cg=5') || false;
       if(parseBody.ads.length > 0) {
         parseBody.ads.forEach((item)=>{
+          if(check_tag) // chi do dien tu
+            item.tag_rate_New ='Mới ' + ((Math.random() *6) +4).toFixed(0) +'0%'
           item.distance = (Math.random() * distance).toFixed(1);
         })
       }
