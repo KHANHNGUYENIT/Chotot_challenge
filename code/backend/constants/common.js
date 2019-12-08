@@ -19,6 +19,6 @@ module.exports = Object.freeze( {
     API_HOST: 'gateway.chotot.com',
     API_PORT: 443,
 
-    API_DATA: 'localhost',
-    API_DATA_PORT: 5000
+    API_DATA: '118.69.225.72',
+    API_DATA_PORT: 8000
 })
