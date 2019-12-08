@@ -50,10 +50,17 @@ class DeviceList extends React.Component {
     const dataId = this.props.navigation.getParam('data', 'some default value');
     const userID = this.props.navigation.getParam('userId');
     const keySearch = this.props.navigation.getParam('keySearch');
+    console.log('--------------dataId-------------');
+    console.log(dataId);
     this.setState({
       dataId: dataId,
       userID: userID
     })
+    setInterval(() => {
+      this.setState({
+        visible: !this.state.visible
+      });
+    }, 30000);
     this.GetData(dataId,userID,keySearch);
   }
 
@@ -90,14 +97,7 @@ class DeviceList extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this.GetData(this.page);
-    setInterval(() => {
-      this.setState({
-        visible: !this.state.visible
-      });
-    }, 30000);
-  }
+  
   fetchData = (category,keySearch) => {
     let api = cloneDeep(HOME_API.getItem);
     api.url = api.url + "?cg=" + category + "&limit="
@@ -206,43 +206,8 @@ class DeviceList extends React.Component {
   };
   onRefresh() {
     this.GetData(this.state.dataId,this.state.userID);
-    // this.setState({
-    //   loading: true,
-    //   dataSource: { ...this.GetData(), }
-    // }
-    // ); // true isRefreshing flag for enable pull to refresh indicator
-
   }
-  // RenderList = ({ item }) => {
-  //   return (
-  //     <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={() => this.onPress(item)} >
-  //       <View style={{ flexDirection: 'row' }}>
-  //         <View style={{ flex: 0.34 }}>
-  //           <Image style={styles.flatStylePic}
-  //             source={{ uri: item.image }} resizeMode="stretch" >
-  //           </Image>
-  //         </View>
-  //         <View style={{ flex: 0.66, flexDirection: 'column' }}>
-  //           <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
-  //             {item.subject}</Text>
-  //           {/* <View style={{height:0.7, backgroundColor:'gray'}}></View> */}
-  //           <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
-  //           {/* <View style={{height:0.7, backgroundColor:'gray'}}></View> */}
-  //           <View style={{ flexDirection: 'row' }}>
-  //             <Text style={styles.styleTextAddress} >|{item.region_name}</Text>
-  //             <TouchableOpacity style={{ justifyContent: 'flex-end' }}
-  //             //onPress={changeColor}
-  //             >
-  //               <MaterialCommunityIcons style={{ justifyContent: 'flex-end' }}
-  //                 name="heart-outline" size={25} color={'gray'}>
-  //               </MaterialCommunityIcons>
-  //             </TouchableOpacity>
-  //           </View>
-  //         </View>
-  //       </View>
-  //     </TouchableOpacity>
-  //   );
-  // }
+ 
   render() {
     if (this.state.loading) {
       return (
@@ -261,7 +226,7 @@ class DeviceList extends React.Component {
           onRefresh={this.onRefresh.bind(this)}
           keyExtractor={item => item.ad_id.toString()}
           ItemSeparatorComponent={this.renderSeparator}
-          onEndReached={()=>{this.GetData(this.state.dataId,this.state.userID)}} onEndReachedThreshold={1}
+          onEndReached={()=>{this.GetData(this.state.dataId,this.state.userID,'')}} onEndReachedThreshold={1}
           ListFooterComponent={this.state.lastPageReached ? <Text>No more items</Text> : <ActivityIndicator
             size="large"
             loading={this.state.loading}
