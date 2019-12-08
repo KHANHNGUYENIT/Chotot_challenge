@@ -58,11 +58,14 @@ class HomeScreen extends React.Component {
         <View style={styles.containItem}>
           <Image style={styles.image} source={{ uri: item.image }}></Image>
           <Text style={styles.itemName} numberOfLines={1} ellipsizeMode={"tail"}>{item.subject}</Text>
-          <Text style={styles.itemPrice} numberOfLines={1} ellipsizeMode={"tail"}>{item.price_string}</Text>
+          <View style = {{flexDirection: "row"}}>
+            <Text style={styles.itemPrice} numberOfLines={1} ellipsizeMode={"tail"}>{item.price_string}</Text>
+            <Text style={styles.percent}> Mới 100%</Text>
+          </View>
           <View style={styles.containSmallText}>
             <Text style={styles.smalltext}>{item.date}</Text>
             <Text style={styles.smalltext}> | </Text>
-            <Text style={styles.smalltext}>{item.distance} km</Text>
+            <Text style={styles.smalltext,{color:"#ffa100",fontSize:11}}>{item.distance} km</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>

@@ -25,7 +25,7 @@ class CategoryScreen extends React.Component  {
     Alert("Feature will update soon!")
   }
   onPress = (id) => {
-    this.props.navigation.navigate('Profile',{data: id});
+    this.props.navigation.navigate('Profile',{data: id,keySearch: ''});
   } 
   render() {
     return (

@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
   smalltext:{
     fontSize:11,
     color:"#8c8c8c"
-  }
+  },
+  percent:{fontSize:10, color:"#008ae6", borderColor:"#008ae6",borderStyle:"solid",borderWidth:1,padding:1,marginLeft:5,borderRadius:5}
 });
 
 export { styles }
