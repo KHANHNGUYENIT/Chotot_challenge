@@ -111,7 +111,7 @@ class HomeScreen extends React.Component {
     console.log('--------------------search----------------');
     console.log(keySearch);
     if (keySearch.includes('ĐIỆN THOẠI') || keySearch.includes('IPHONE'))
-      type = 2;
+      type = 6;
     if (keySearch.includes('PHÒNG') || keySearch.includes('NHÀ') || keySearch.includes('ĐẤT'))
       type = 1;
     this.props.navigation.navigate('Profile', { data: type, keySearch: this.state.keySearch });
@@ -299,7 +299,7 @@ class HomeScreen extends React.Component {
             <View style={styles.viewFlatHome}>
               <View style={styles.headerGroup}>
                 <Text style={styles.header}>Đồ điện tử</Text>
-                <TouchableOpacity onPress={() => this.onPressLink(2)}>
+                <TouchableOpacity onPress={() => this.onPressLink(6)}>
                   <Text style={styles.link}>Xem thêm</Text>
                 </TouchableOpacity>
               </View>

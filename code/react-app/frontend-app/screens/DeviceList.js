@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   View, FlatList, Image, TouchableOpacity
 } from 'react-native';
-import { MaterialCommunityIcons,MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { general } from '../constants/general';
 import * as EVENT from '../apis/event';
@@ -15,6 +15,7 @@ import { cloneDeep, pick } from 'lodash';
 import requestApi from '../utilities/request';
 import * as HOME_API from '../apis/home';
 import * as authenticationActionCreators from '../actions/authentication';
+import * as eventName from '../constants/Event';
 
 
 class DeviceList extends React.Component {
@@ -30,38 +31,27 @@ class DeviceList extends React.Component {
   };
   constructor(props) {
     super(props);
-    // this.onPress = this.onPress.bind(this);
-    // this.page = 1;
-    // this.GetData = this.GetData.bind(this);
     this.state = {
       loading: true,
       isRefreshing: false, //for pull to refresh
       dataSource: [],
       error: '',
-      visible: false,
       lastPageReached: false,
       offset: 0,
       dataId: 1,
-      userID:''
+      userID: ''
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const dataId = this.props.navigation.getParam('data', 'some default value');
     const userID = this.props.navigation.getParam('userId');
     const keySearch = this.props.navigation.getParam('keySearch');
-    console.log('--------------dataId-------------');
-    console.log(dataId);
     this.setState({
       dataId: dataId,
       userID: userID
     })
-    setInterval(() => {
-      this.setState({
-        visible: !this.state.visible
-      });
-    }, 30000);
-    this.GetData(dataId,userID,keySearch);
+    this.GetData(dataId, userID, keySearch);
   }
 
   setLoading = (isLoading) => {
@@ -82,7 +72,7 @@ class DeviceList extends React.Component {
     })
   }
 
-  GetData(dataId,userID, keySearch) {
+  GetData(dataId, userID, keySearch) {
     switch (dataId) {
       case 0: this.props.navigation.setParams({ otherParam: 'Có thể bạn quan tâm' })
               this.getInterestedListItem(userID);
@@ -136,24 +126,24 @@ class DeviceList extends React.Component {
     }
   };
 
-  
-  fetchData = (category,keySearch) => {
+
+  fetchData = (category, keySearch) => {
     let api = cloneDeep(HOME_API.getItem);
     api.url = api.url + "?cg=" + category + "&limit="
-      + general.page.limit + "&o=" + this.state.offset + "&distance=" + general.page.distance + "&keysearch="+keySearch;
+      + general.page.limit + "&o=" + this.state.offset + "&distance=" + general.page.distance + "&keysearch=" + keySearch;
     console.log('before fetch');
     requestApi(api).then(async (data) => {
       const jsonData = await data.json();
       let oldData = this.state.dataSource;
       if (jsonData.ads.length > 0) {
-        let newData = oldData.concat(jsonData.ads);
+        let newData = this.filterForUniqueAd(oldData.concat(jsonData.ads));
         this.setState({ dataSource: newData });
         this.setLoading(false);
         this.setOffset(this.state.offset + 20);
       }
       else
         this.setLastPageReached(true);
-      
+
     }).catch(error => {
       console.log(error);
     })
@@ -194,16 +184,31 @@ class DeviceList extends React.Component {
       })
   }
 
+  filterForUniqueAd = arr => {
+    console.log("arr", arr);
+    const cleaned = [];
+    arr.forEach(itm => {
+      let unique = true;
+      cleaned.forEach(itm2 => {
+        const isEqual = JSON.stringify(itm) === JSON.stringify(itm2);
+        if (isEqual) unique = false;
+      });
+      if (unique) cleaned.push(itm);
+    });
+    console.log("cleaned", cleaned);
+    return cleaned;
+  };
+
   renderFooter = () => {
     //it will show indicator at the bottom of the list when data is loading otherwise it returns null
     if (!this.state.loading) return null;
     return (
-      <ActivityIndicator 
-         style={{ color: '#000' }}
- 
+      <ActivityIndicator
+        style={{ color: '#000' }}
+
       />
     );
- 
+
   };
   handleLoadMore = () => {
     if (!this.state.loading) {
@@ -211,53 +216,53 @@ class DeviceList extends React.Component {
       this.GetData(this.page); // method for API call 
     }
   }
-  RenderList =  ({item }) => {
-      return (
-        <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={()=>this.onPress(item)} >
-            <View style={{flexDirection: 'row' }}>
-                <Image style ={styles.flatStylePic}
-                    source={{uri: item.image}} resizeMode="stretch" >
-                </Image>
-                <View style={styles.styleText}>
-                      <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
-                        {item.subject}</Text>
-                      <View style={{flexDirection: 'row'}}>
-                          <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
-                               <TouchableOpacity style={{marginLeft:5, flex:0.2, justifyContent:'flex-end'}}>
-                                    <MaterialCommunityIcons  
-                                    name="heart-outline" size={25} color={'red'}>
-                                    </MaterialCommunityIcons>
-                              </TouchableOpacity>
-                              {/* <TouchableOpacity style={{marginLeft:5, justifyContent:'flex-end'}} >
-                                    <MaterialCommunityIcons
-                                    name="heart" size={25} color={'red'}>
-                                    </MaterialCommunityIcons>
-                              </TouchableOpacity> */}
-                      </View>
-                  <View style={{flexDirection: 'row'}}>
-                      <MaterialIcons style={{marginLeft:5}} name="location-on" color='gray' ></MaterialIcons>
-                      <Text style={styles.styleTextAddress} >{item.region_name}</Text>
-                  </View>
-               </View>
-            </View>   
-       </TouchableOpacity>
-      );
+  RenderList = ({ item }) => {
+    return (
+      <TouchableOpacity style={styles.flatDetail} key={item.ad_id} onPress={() => this.onPress(item)} >
+        <View style={{ flexDirection: 'row' }}>
+          <Image style={styles.flatStylePic}
+            source={{ uri: item.image }} resizeMode="stretch" >
+          </Image>
+          <View style={styles.styleText}>
+            <Text style={styles.styleTextSubject} numberOfLines={2} ellipsizeMode={"tail"}>
+              {item.subject}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
+              <TouchableOpacity style={{ marginLeft: 5, flex: 0.2, justifyContent: 'flex-end' }}>
+                <MaterialCommunityIcons
+                  name="heart-outline" size={25} color={'red'}>
+                </MaterialCommunityIcons>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.containSmallText}>
+              <Text style={styles.smalltext}>{item.date}</Text>
+              <Text style={styles.smalltext}> | </Text>
+              <Text style={styles.smalltext}>{item.distance} km</Text>
+            </View>
+            {/* <View style={{ flexDirection: 'row' }}>
+              <MaterialIcons style={{ marginLeft: 5 }} name="location-on" color='gray' ></MaterialIcons>
+              <Text style={styles.styleTextAddress} >{item.region_name}</Text>
+            </View> */}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
   };
   onRefresh() {
-    this.GetData(this.state.dataId,this.state.userID);
+    this.GetData(this.state.dataId, this.state.userID);
   }
- 
+
   render() {
     if (this.state.loading) {
       return (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#0c9" loading={this.state.loading}/>
+          <ActivityIndicator size="large" color="#0c9" loading={this.state.loading} />
         </View>
       )
-  
+
     }
     return (
-      <LinearGradient style={styles.container} colors={['#ffba00', '#ffffff']}>
+      <View style={styles.container}>
         <FlatList style={{ flex: 1 }}
           data={this.state.dataSource}
           renderItem={this.RenderList}
@@ -265,13 +270,13 @@ class DeviceList extends React.Component {
           onRefresh={this.onRefresh.bind(this)}
           keyExtractor={item => item.ad_id.toString()}
           ItemSeparatorComponent={this.renderSeparator}
-          onEndReached={()=>{this.GetData(this.state.dataId,this.state.userID,'')}} onEndReachedThreshold={1}
+          onEndReached={() => { this.GetData(this.state.dataId, this.state.userID, '') }} onEndReachedThreshold={1}
           ListFooterComponent={this.state.lastPageReached ? <Text>No more items</Text> : <ActivityIndicator
             size="large"
             loading={this.state.loading}
           />}
         />
-      </LinearGradient>
+      </View>
     );
   }
 }
@@ -309,7 +314,8 @@ const styles = StyleSheet.create({
   },
   flatStylePic: {
     // flex: 0.315,
-    width: 120, height: 109,
+    width: 120,
+    height: 109,
     // borderTopLeftRadius:14,
     // borderBottomLeftRadius: 14,
     // borderRadius: 14,
@@ -317,15 +323,17 @@ const styles = StyleSheet.create({
   },
   styleTextSubject: {
     //  flex: 0.45,
-      fontSize: 15,
-      marginLeft:7,
-      fontWeight: "bold",
+    fontSize: 15,
+    marginLeft: 7,
+    fontWeight: "bold",
   },
   styleTextPrice: {
     flex: 0.8,
-    fontSize: 15, 
+    fontSize: 15,
     color: 'red',
     marginLeft: 7,
+    paddingVertical: 10,
+    fontWeight: "bold"
   },
   styleTextAddress: {
     //flex: 0.15,
@@ -340,11 +348,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   styleText: {
-
-    flex: 0.685, flexDirection: 'column', marginLeft: 0.5,
-    borderBottomRightRadius: 14, borderTopRightRadius: 14, marginBottom: 1.5, marginTop: 0.5,
+    // flex: 0.685,
+    width: "80%",
+    flexDirection: 'column',
+    marginLeft: 0.5,
+    borderBottomRightRadius: 14,
+    borderTopRightRadius: 14,
+    marginBottom: 1.5,
+    marginTop: 0.5,
     // marginLeft:0.1,
     // backgroundColor:'#00ffef',
+  },
+  containSmallText:{ 
+    flexDirection: "row",
+    paddingLeft: 7,
+    position: "absolute",
+    bottom: 10
+  },
+  smalltext:{
+    fontSize:11,
+    color:"#8c8c8c"
   }
 });
 
