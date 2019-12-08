@@ -228,16 +228,16 @@ class DeviceList extends React.Component {
               {item.subject}</Text>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
-              <TouchableOpacity style={{ marginLeft: 5, flex: 0.2, justifyContent: 'flex-end' }}>
-                <MaterialCommunityIcons
-                  name="heart-outline" size={25} color={'red'}>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
             </View>
             <View style={styles.containSmallText}>
               <Text style={styles.smalltext}>{item.date}</Text>
               <Text style={styles.smalltext}> | </Text>
               <Text style={styles.smalltext}>{item.distance} km</Text>
+              <TouchableOpacity style={{ position:"absolute",right:10 }}>
+                <MaterialCommunityIcons
+                  name="heart-outline" size={25} color={'red'}>
+                </MaterialCommunityIcons>
+              </TouchableOpacity>
             </View>
             {/* <View style={{ flexDirection: 'row' }}>
               <MaterialIcons style={{ marginLeft: 5 }} name="location-on" color='gray' ></MaterialIcons>
@@ -360,6 +360,7 @@ const styles = StyleSheet.create({
     // backgroundColor:'#00ffef',
   },
   containSmallText:{ 
+    width: "90%",
     flexDirection: "row",
     paddingLeft: 7,
     position: "absolute",

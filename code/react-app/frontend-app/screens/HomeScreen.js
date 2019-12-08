@@ -261,7 +261,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Search eventSearch={() => { this.getDataSearch() }} setKeySearch={this.setKeySearch}></Search>
-        <View style={{ flex: 9 }}>
+        <View style={{ flex: 0.9 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.viewFlatHome}>
               <View style={styles.containBtn}>
