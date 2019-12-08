@@ -1,17 +1,20 @@
 const constants = require('../../constants/common');
 const https = require('https');
-const CATEGORY = 5000;
 const LIMIT = 20;
-const OFSET = 0;
+const OFFSET = 0;
 const DISTANCE = 10; //default 10km
 
 exports.item = (req, res, next) => {
-  let cg = req.param('cg') || CATEGORY;
+  let cg = req.param('cg');
   let limit = req.param('limit') || LIMIT;
-  let ofset = req.param('o') || OFSET;
+  let offset = req.param('o') || OFFSET;
   let distance = req.param('distance') || DISTANCE;
   let sort_distance= req.param('sort') || false;
   let keyword = req.param('keysearch');
+  if(cg)
+    cg = '&cg='+cg;
+  else
+    cg = '';
   if(keyword) {
     keyword='&q='+ encodeURIComponent(keyword);
   }
@@ -19,7 +22,7 @@ exports.item = (req, res, next) => {
 
   let options = {
     host: constants.API_HOST,
-    path: '/v1/public/ad-listing?app_id=android&cg=' + cg + '&limit=' + limit + '&o=' + ofset+keyword,
+    path: '/v1/public/ad-listing?app_id=android'+ cg + '&limit=' + limit + '&o=' + offset+keyword,
     port: 443,
     method: 'GET'
   }
