@@ -111,7 +111,10 @@ class LoginScreen extends React.Component {
 };
 
 LoginScreen.navigationOptions = {
-  title: ''
+  title: '',
+  headerStyle: {
+    backgroundColor: "#ffba00",
+  },
 };
 
 const styles = StyleSheet.create({

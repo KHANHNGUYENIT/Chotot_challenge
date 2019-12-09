@@ -122,7 +122,29 @@ const styles = StyleSheet.create({
     fontSize:11,
     color:"#8c8c8c"
   },
-  percent:{fontSize:10, color:"#008ae6", borderColor:"#008ae6",borderStyle:"solid",borderWidth:1,padding:1,marginLeft:5,borderRadius:5}
+  percent:{fontSize:10, color:"#008ae6", borderColor:"#008ae6",borderStyle:"solid",borderWidth:1,padding:1,marginLeft:5,borderRadius:5},
+
+  containerNoti: {
+    flex: 1,
+    flexDirection:'column',
+    paddingTop: 15,
+    backgroundColor: '#fff',
+    justifyContent:'center'
+  
+  },
+  styleIcon:{
+    //flex:0.7,
+    justifyContent:'center', 
+    alignItems:'center',
+    marginLeft:10,
+  },
+  styleText:{
+   // flex:0.3,
+    color:"#ffba00", textAlign:'center',
+    marginBottom: 20,
+     fontSize:30
+  },
+
 });
 
 export { styles }

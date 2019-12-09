@@ -76,7 +76,10 @@ class RegisterScreen extends React.Component {
 };
 
 RegisterScreen.navigationOptions = {
-  title: ''
+  title: '',
+  headerStyle: {
+    backgroundColor: "#ffba00",
+  },
 };
 
 const styles = StyleSheet.create({
