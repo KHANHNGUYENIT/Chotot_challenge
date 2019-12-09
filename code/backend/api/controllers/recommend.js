@@ -48,13 +48,13 @@ exports.detail = (req, res, next) => {
         res.send(jsonData);
 }
 
-async function getListDetailByListIdAds(list_ads_id) {
+ function getListDetailByListIdAds(list_ads_id) {
     let result = [];
     let count = 5;
-    async function run() {
+     function run() {
         list_ads_id.forEach((ads_id) => {
             if (count > 0) {
-               await getDatabyAdsListId(ads_id, function (tempAds) {
+                getDatabyAdsListId(ads_id, function (tempAds) {
                     if (tempAds.message) {
                         count = count--;
                         result.push(tempAds);
@@ -63,11 +63,11 @@ async function getListDetailByListIdAds(list_ads_id) {
             }
         });
     }
-    await run();
+     run();
     return result
 }
 
-async function getDatabyAdsListId(ad_list_id, callback) {
+ function getDatabyAdsListId(ad_list_id, callback) {
     if (ad_list_id == undefined || ad_list_id == null)
         return null;
 
