@@ -28,6 +28,7 @@ import * as asyncStorage from '../constants/localStorage';
 import * as eventName from '../constants/Event';
 import * as authenticationActionCreators from '../actions/authentication';
 import { general } from '../constants/general';
+import {AsyncStorage} from 'react-native';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -58,14 +59,14 @@ class HomeScreen extends React.Component {
         <View style={styles.containItem}>
           <Image style={styles.image} source={{ uri: item.image }}></Image>
           <Text style={styles.itemName} numberOfLines={1} ellipsizeMode={"tail"}>{item.subject}</Text>
-          <View style = {{flexDirection: "row"}}>
+          <View style={{ flexDirection: "row" }}>
             <Text style={styles.itemPrice} numberOfLines={1} ellipsizeMode={"tail"}>{item.price_string}</Text>
-            <Text style={styles.percent}> Mới 100%</Text>
+            <Text style={item.tag_rate_New?styles.percent:{display:"none"}}>{item.tag_rate_New}</Text>
           </View>
           <View style={styles.containSmallText}>
             <Text style={styles.smalltext}>{item.date}</Text>
             <Text style={styles.smalltext}> | </Text>
-            <Text style={styles.smalltext,{color:"#ffa100",fontSize:11}}>{item.distance} km</Text>
+            <Text style={styles.smalltext, { color: "#ffa100", fontSize: 11 }}>{item.distance} km</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -137,15 +138,19 @@ class HomeScreen extends React.Component {
 
   checkLogin = () => {
     let api = cloneDeep(AUTHENTICATION_API.checkLogin);
-    requestApi(api).then(async (data) => {
-      const jsonData = await data.json();
-      console.log(jsonData);
-      if (jsonData) {
-        this.props.dispatchAuthentication.loggedIn(jsonData.token, jsonData.data);
-        //lấy danh sách các item có thể bạn quan tâm
-        this.getInterestedListItem(jsonData.data.userID);
-      }
-    })
+      requestApi(api).then(async (data) => {
+        const jsonData = await data.json();
+        console.log(jsonData);
+        if (jsonData!=undefined) {
+          this.props.dispatchAuthentication.loggedIn(jsonData.token, jsonData.data);
+          //lấy danh sách các item có thể bạn quan tâm
+          this.getInterestedListItem(jsonData.data.userID);
+        }
+      })
+  }
+
+  getToken = async ()=>{
+    return await AsyncStorage.getItem(asyncStorage.TOKEN);
   }
 
   getInterestedListItem = async (userId) => {
@@ -191,8 +196,7 @@ class HomeScreen extends React.Component {
 
   getNewList = () => {
     let api = cloneDeep(HOME_API.getItem);
-    api.url = api.url + "?cg=" + general.category.ElectronicDevice + "&limit="
-      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+    api.url = api.url + "?limit="+ general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
     requestApi(api)
       .then(async (data) => {
         const jsonData = await data.json();
@@ -207,7 +211,7 @@ class HomeScreen extends React.Component {
   getHotList = () => {
     let api = cloneDeep(HOME_API.getItem);
     api.url = api.url + "?cg=" + general.category.ElectronicDevice + "&limit="
-      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance + "&is_shop=true";
     requestApi(api)
       .then(async (data) => {
         const jsonData = await data.json();

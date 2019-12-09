@@ -75,7 +75,8 @@ class DeviceList extends React.Component {
   GetData(dataId, userID, keySearch) {
     switch (dataId) {
       case 0: this.props.navigation.setParams({ otherParam: 'Có thể bạn quan tâm' })
-        this.getInterestedListItem(userID);
+        this.fetchData(general.category.ElectronicDevice, keySearch);
+        // this.getInterestedListItem(userID);
         break;
       case 1: this.props.navigation.setParams({ otherParam: 'Bất động sản' })
         this.fetchData(general.category.RealEstate, keySearch);
@@ -372,17 +373,17 @@ const styles = StyleSheet.create({
     color: "#8c8c8c"
   },
   percent: {
-    fontSize: 10, 
-    color: "#008ae6", 
-    borderColor: "#008ae6", 
-    borderStyle: "solid", 
-    borderWidth: 1, 
-    padding: 1, 
-    marginLeft: 10, 
+    fontSize: 10,
+    color: "#008ae6",
+    borderColor: "#008ae6",
+    borderStyle: "solid",
+    borderWidth: 1,
+    padding: 1,
+    marginLeft: 10,
     borderRadius: 5,
     height: 18,
-    marginTop:10
-   }
+    marginTop: 10
+  }
 });
 
 const mapStateToProps = (state) => {
