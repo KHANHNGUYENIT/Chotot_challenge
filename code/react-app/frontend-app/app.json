@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "GMApp",
+    "description": "app demo for coderschool",
     "slug": "frontend-app",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -13,9 +14,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo.jpg",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/logoimage.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffd503"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -30,6 +31,10 @@
           "NSAllowsArbitraryLoads": true
         }
       }
-    }
+    },
+    "android": {
+      "package": "com.GMapp.GMappDemo"
+    },
+    "githubUrl": "https://github.com/KHANHNGUYENIT/Chotot_challenge/tree/master/code/react-app/frontend-app"
   }
 }

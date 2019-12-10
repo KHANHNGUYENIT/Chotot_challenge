@@ -88,8 +88,8 @@ class HomeScreen extends React.Component {
   }
 
   setKeySearch = (key) => {
-    console.log('------------------key---------------')
-    console.log(key);
+    // console.log('------------------key---------------')
+    // console.log(key);
     this.setState({
       keySearch: key
     })
@@ -112,8 +112,8 @@ class HomeScreen extends React.Component {
   getDataSearch = async () => {
     let type = 0;
     let keySearch = this.state.keySearch.toUpperCase();
-    console.log('--------------------search----------------');
-    console.log(keySearch);
+    // console.log('--------------------search----------------');
+    // console.log(keySearch);
     if (keySearch.includes('ĐIỆN THOẠI') || keySearch.includes('IPHONE'))
       type = 6;
     if (keySearch.includes('PHÒNG') || keySearch.includes('NHÀ') || keySearch.includes('ĐẤT'))
@@ -258,13 +258,7 @@ class HomeScreen extends React.Component {
         </View>
       );
     }
-    // if (this.state.hasErrored == true) {
-    //   return (
-    //     <View style={styles.container}>
-    //       <Text>Error =(</Text>
-    //     </View>
-    //   );
-    // }
+
     return (
       <View style={styles.container}>
         <Search eventSearch={() => { this.getDataSearch() }} setKeySearch={this.setKeySearch}></Search>
@@ -276,7 +270,6 @@ class HomeScreen extends React.Component {
                 <Button text={"Mới đây"} id={2} icon={""} currentBtn={this.state.tabCurrent} setTabCurrent={this.setTabCurrent}></Button>
                 <Button text={"Phổ biến"} id={3} icon={""} currentBtn={this.state.tabCurrent} setTabCurrent={this.setTabCurrent}></Button>
               </View>
-              {/* <View style={{ flex: 0.05, marginTop: 4, height: 1, backgroundColor: '#ffa100' }}></View> */}
               <View>
                 <FlatList
                   data={this.state.headList.ads}
@@ -294,7 +287,6 @@ class HomeScreen extends React.Component {
                   <Text style={styles.link}>Xem thêm</Text>
                 </TouchableOpacity>
               </View>
-              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
               <FlatList
                 data={this.state.dataDDT.ads}
                 renderItem={this.renderList}
@@ -310,7 +302,7 @@ class HomeScreen extends React.Component {
                   <Text style={styles.link}>Xem thêm</Text>
                 </TouchableOpacity>
               </View>
-              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
+
               <FlatList
                 data={this.state.dataDDT.ads}
                 renderItem={this.renderList}
