@@ -122,10 +122,22 @@ class HomeScreen extends React.Component {
     let keySearch = this.state.keySearch.toUpperCase();
     // console.log('--------------------search----------------');
     // console.log(keySearch);
-    if (keySearch.includes('ĐIỆN THOẠI') || keySearch.includes('IPHONE'))
+    if (keySearch.includes('ĐIỆN THOẠI') || keySearch.includes('IPHONE')|| keySearch.includes('SAMSUNG')
+    || keySearch.includes('OPPO')|| keySearch.includes('MAY TINH') || keySearch.includes('LAPTOP')
+    || keySearch.includes('Máy tính bảng') || keySearch.includes('tivi') || keySearch.includes('Linh kiện')
+    || keySearch.includes('RAM') || keySearch.includes('Thiết bị đeo tay') || keySearch.includes('máy ảnh')
+    || keySearch.includes('SonySony') || keySearch.includes('dell')|| keySearch.includes('HP') || keySearch.includes('Asus'))
       type = 6;
-    if (keySearch.includes('PHÒNG') || keySearch.includes('NHÀ') || keySearch.includes('ĐẤT'))
-      type = 1;
+    if (keySearch.includes('PHÒNG') || keySearch.includes('NHÀ') || keySearch.includes('ĐẤT') ||
+        keySearch.includes('chung cư') || keySearch.includes('NHÀ mặt phố') || keySearch.includes('ĐẤT nền')||
+        keySearch.includes('khách sạn') || keySearch.includes('đất mặt tiền') || keySearch.includes('đất giá rẻ')||
+        keySearch.includes('đất ngoại ô') || keySearch.includes('NHÀ hẻm') || keySearch.includes('nhà trọ'))
+              type = 1;
+    if (keySearch.includes('xe yamaha') || keySearch.includes('xe tay ga') || keySearch.includes('xe mới') ||
+        keySearch.includes('honda sh') || keySearch.includes('tay côn') || keySearch.includes('xe ô tô')||
+        keySearch.includes('xe máy') || keySearch.includes('xe bán tải') || keySearch.includes('xe hơi 4 chổ')||
+        keySearch.includes('xe độ') || keySearch.includes('winner') || keySearch.includes('pô'))
+                    type = 11;          
     this.props.navigation.navigate('Profile', { data: type, keySearch: this.state.keySearch });
 
   }
