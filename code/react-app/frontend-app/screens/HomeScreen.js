@@ -29,7 +29,7 @@ import * as asyncStorage from '../constants/localStorage';
 import * as eventName from '../constants/Event';
 import * as authenticationActionCreators from '../actions/authentication';
 import { general } from '../constants/general';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -56,8 +56,8 @@ class HomeScreen extends React.Component {
     this.getDataNoiThat();
     this.getDataThuC();
     this.getDataByTabId(this.state.tabCurrent);
-    this.checkLogin();
     this.getData();
+    this.checkLogin();
     // this.getInterestedListItem('d59c9611-760e-4c7a-baac-a72ac5000680');
   }
 
@@ -69,7 +69,7 @@ class HomeScreen extends React.Component {
           <Text style={styles.itemName} numberOfLines={1} ellipsizeMode={"tail"}>{item.subject}</Text>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.itemPrice} numberOfLines={1} ellipsizeMode={"tail"}>{item.price_string}</Text>
-            <Text style={item.tag_rate_New?styles.percent:{display:"none"}}>{item.tag_rate_New}</Text>
+            <Text style={item.tag_rate_New ? styles.percent : { display: "none" }}>{item.tag_rate_New}</Text>
           </View>
           <View style={styles.containSmallText}>
             <Text style={styles.smalltext}>{item.date}</Text>
@@ -198,29 +198,52 @@ class HomeScreen extends React.Component {
 
   checkLogin = () => {
     let api = cloneDeep(AUTHENTICATION_API.checkLogin);
-      requestApi(api).then(async (data) => {
-        const jsonData = await data.json();
-        console.log(jsonData);
-        if (jsonData!=undefined) {
-          this.props.dispatchAuthentication.loggedIn(jsonData.token, jsonData.data);
-          //lấy danh sách các item có thể bạn quan tâm
-          this.getInterestedListItem(jsonData.data.userID);
-        }
+    requestApi(api).then(async (data) => {
+      const jsonData = await data.json();
+      console.log("------------------------check----------------------");
+      console.log(jsonData);
+      if (jsonData) {
+        this.props.dispatchAuthentication.loggedIn(jsonData.token, jsonData.data);
+        console.log(jsonData.data)
+        //lấy danh sách các item có thể bạn quan tâm
+        this.getInterestedListItem(jsonData.data.userId);
+      }
+      else {
+        var temp = this.state.dataDDT;
+        this.setState({
+          interestedList: temp
+        })
+      }
+    })
+      .catch(error => {
+        console.log(error);
+
       })
   }
 
-  getToken = async ()=>{
+  getToken = async () => {
     return await AsyncStorage.getItem(asyncStorage.TOKEN);
   }
 
   getInterestedListItem = async (userId) => {
     let api = cloneDeep(RECOMMEND_API.getInterestedItem);
-    api.request.body = JSON.stringify({
-      userID: userId,
-    });
+    api.url = api.url + "?user_id=" + userId;
     requestApi(api).then(async (data) => {
       const jsonData = await data.json();
-      this.setState({ interestedList: jsonData });
+      console.log("-----------------get interest--------------");
+      console.log(jsonData);
+      if (jsonData.ads.length > 0)
+        this.setState({ interestedList: jsonData });
+      else {
+        var temp = this.state.dataDDT;
+        this.setState({
+          interestedList: temp
+        })
+      }
+
+    })
+    .catch(error=>{
+      console.log(error);
     })
   }
 
@@ -256,7 +279,7 @@ class HomeScreen extends React.Component {
 
   getNewList = () => {
     let api = cloneDeep(HOME_API.getItem);
-    api.url = api.url + "?limit="+ general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+    api.url = api.url + "?limit=" + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
     requestApi(api)
       .then(async (data) => {
         const jsonData = await data.json();

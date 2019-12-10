@@ -6,6 +6,7 @@ import {
   ScrollView, Dimensions,
   Image, Platform, Linking,
   TextInput, TouchableOpacity,
+  FlatList, TouchableWithoutFeedback
 } from 'react-native';
 import { MaterialCommunityIcons, Feather, Entypo } from '@expo/vector-icons';
 import * as EVENT from '../apis/event';
@@ -16,6 +17,7 @@ import { AsyncStorage } from 'react-native';
 import * as authenticationActionCreators from '../actions/authentication';
 import requestApi from '../utilities/request';
 import * as HOME_API from '../apis/home';
+import { general } from '../constants/general';
 
 
 const { heigh, width } = Dimensions.get('window');
@@ -27,7 +29,8 @@ class DeviceDetail extends React.Component {
       dataObject: {},
       user: {},
       image: 'a',
-      distance: ''
+      distance: '',
+      dataSameShop: []
     };
   }
   componentDidMount() {
@@ -37,9 +40,7 @@ class DeviceDetail extends React.Component {
     })
     console.log("------------------------id------------------------");
     this.getData(data.list_id);
-    // console.log(dataObject);
-    // this.setState({ dataObject });
-    // console.log(dataObject);
+    this.getSameShopItemList();
     this.getUser();
   }
 
@@ -55,6 +56,20 @@ class DeviceDetail extends React.Component {
     })
       .catch(error => {
         console.log('error');
+      })
+  }
+
+  getSameShopItemList = () => {
+    let api = cloneDeep(HOME_API.getItem);
+    api.url = api.url + "?limit=4&o=" + general.page.offset + "&distance=" + general.page.distance;
+    requestApi(api)
+      .then(async (data) => {
+        const jsonData = await data.json();
+        this.setState({ dataSameShop: jsonData });
+        // this.setLoading(false)
+      })
+      .catch(error => {
+        console.log(error);
       })
   }
 
@@ -112,6 +127,27 @@ class DeviceDetail extends React.Component {
   eventChat = (ad_id) => {
     console.log(ad_id);
     this.saveEvent(ad_id, eventName.CHAT_CLICK);
+  }
+
+  renderList = ({ item }) => {
+    return (
+      <TouchableWithoutFeedback key={item.ad_id}>
+        <View style={styles.containItem}>
+          <Image style={styles.image} source={{ uri: item.image }}></Image>
+          <Text style={styles.itemName} numberOfLines={1} ellipsizeMode={"tail"}>{item.subject}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.itemPrice} numberOfLines={1} ellipsizeMode={"tail"}>{item.price_string}</Text>
+            <Text style={item.tag_rate_New ? styles.percent : { display: "none" }}>{item.tag_rate_New}</Text>
+          </View>
+          <View style={styles.containSmallText}>
+            <Text style={styles.smalltext}>{item.date}</Text>
+            <Text style={styles.smalltext}> | </Text>
+            <Text style={styles.smalltext, { color: "#ffa100", fontSize: 11 }}>{item.distance} km</Text>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+
   }
 
   render() {
@@ -192,7 +228,22 @@ class DeviceDetail extends React.Component {
           <Text style={{ fontSize: 18, color: 'gray' }}>Thông tin sản phẩm:</Text>
           <Text style={styles.styleBody}>{this.state.dataObject.body}</Text>
         </View>
-
+        <View style={styles.viewFlatHome}>
+          <View style={styles.headerGroup}>
+            <Text style={styles.header}>Sản phẩm khác của người bán</Text>
+            {/* <TouchableOpacity onPress={() => this.onPressLink(0)}>
+              <Text style={styles.link}>Xem thêm</Text>
+            </TouchableOpacity> */}
+          </View>
+          {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
+          <FlatList
+            data={this.state.dataSameShop.ads}
+            renderItem={this.renderList}
+            keyExtractor={item => item.ad_id.toString()}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
       </ScrollView>
     );
   }
@@ -365,6 +416,68 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 18
   },
+  image: {
+    borderRadius: 4,
+    width: 100,
+    height: 120
+  },
+  containItem: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 150,
+    marginHorizontal: 10,
+    marginBottom: 15
+  },
+  headerGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10
+  },
+  header: {
+    // color:"blue",
+    fontWeight: "bold",
+    paddingTop: 5,
+    paddingBottom: 15
+  },
+  link: {
+    color: "#ffa100",
+    paddingTop: 5,
+    paddingBottom: 10
+  },
+  itemName: {
+    paddingVertical: 5,
+    textAlign: "center"
+  },
+  itemPrice: {
+    color: "red"
+  },
+  viewFlatHome: {
+    flex: 6,
+    margin: 7,
+    borderRadius: 14,
+    // borderBottomWidth: 3,
+    // borderTopWidth:3,
+    // borderColor: '#ffba00',
+
+
+    elevation: 5, // Android
+    shadowColor: '#CFD8DC', // iOS
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    backgroundColor: '#fff'
+  },
+  containSmallText: {
+    flexDirection: "row",
+    marginTop: 3
+  },
+  smalltext: {
+    fontSize: 11,
+    color: "#8c8c8c"
+  }
 });
 
 const mapStateToProps = (state) => {

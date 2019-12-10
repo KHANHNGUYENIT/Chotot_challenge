@@ -153,12 +153,20 @@ class DeviceList extends React.Component {
 
   getInterestedListItem = async (userId) => {
     let api = cloneDeep(RECOMMEND_API.getInterestedItem);
-    api.request.body = JSON.stringify({
-      userID: userId,
-    });
+    api.url = api.url + "?user_id=" + userId;
     requestApi(api).then(async (data) => {
       const jsonData = await data.json();
-      this.setState({ interestedList: jsonData });
+      console.log("-----------------get interest--------------");
+      console.log(jsonData);
+      if (jsonData.ads.length > 0)
+        this.setState({ dataSource: jsonData });
+      else {
+        this.fetchData(general.category.ElectronicDevice,"");
+      }
+
+    })
+    .catch(error=>{
+      console.log(error);
     })
   }
 
@@ -192,7 +200,7 @@ class DeviceList extends React.Component {
     arr.forEach(itm => {
       let unique = true;
       cleaned.forEach(itm2 => {
-        const isEqual = JSON.stringify(itm) === JSON.stringify(itm2);
+        const isEqual = JSON.stringify(itm.list_id) === JSON.stringify(itm2.list_id);
         if (isEqual) unique = false;
       });
       if (unique) cleaned.push(itm);

@@ -53,17 +53,13 @@ const logout = (state) => {
 
     tempState = initialState;
 
-    AsyncStorage.clear();
-    // if (!localStorage.getItem(TOKEN))
-    //     localStorage.removeItem(TOKEN);
-    // if (!localStorage.getItem(EMAIL)) 
-    //     localStorage.removeItem(EMAIL);
-    // if (!localStorage.getItem(CARD_NAME))
-    //     localStorage.removeItem(CARD_NAME);
-    // if (!localStorage.getItem(ROLE)) 
-    //     localStorage.removeItem(ROLE);
-    // if (!localStorage.getItem(USER_ID)) 
-    //     localStorage.removeItem(USER_ID);
+    // AsyncStorage.clear();
+    if (!AsyncStorage.getItem(TOKEN))
+        AsyncStorage.removeItem(TOKEN);
+    if (!AsyncStorage.getItem(PHONE))
+        AsyncStorage.removeItem(PHONE);
+    if (!AsyncStorage.getItem(USER_ID))
+        AsyncStorage.removeItem(USER_ID);
     return tempState;
 }
 
