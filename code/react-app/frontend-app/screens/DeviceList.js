@@ -14,6 +14,7 @@ import * as EVENT from '../apis/event';
 import { cloneDeep, pick } from 'lodash';
 import requestApi from '../utilities/request';
 import * as HOME_API from '../apis/home';
+import * as RECOMMEND_API from '../apis/recommend';
 import * as authenticationActionCreators from '../actions/authentication';
 import * as eventName from '../constants/Event';
 
@@ -75,8 +76,8 @@ class DeviceList extends React.Component {
   GetData(dataId, userID, keySearch) {
     switch (dataId) {
       case 0: this.props.navigation.setParams({ otherParam: 'Có thể bạn quan tâm' })
-        this.fetchData(general.category.ElectronicDevice, keySearch);
-        // this.getInterestedListItem(userID);
+        // this.fetchData(general.category.ElectronicDevice, keySearch);
+        this.getInterestedListItem(userID);
         break;
       case 1: this.props.navigation.setParams({ otherParam: 'Bất động sản' })
         this.fetchData(general.category.RealEstate, keySearch);
@@ -151,7 +152,7 @@ class DeviceList extends React.Component {
   }
 
   getInterestedListItem = async (userId) => {
-    let api = cloneDeep(HOME_API.getInterestedItem);
+    let api = cloneDeep(RECOMMEND_API.getInterestedItem);
     api.request.body = JSON.stringify({
       userID: userId,
     });
@@ -229,7 +230,7 @@ class DeviceList extends React.Component {
               {item.subject}</Text>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.styleTextPrice}>Giá: {item.price_string}</Text>
-              <Text style={styles.percent}> Mới 100%</Text>
+              <Text style={item.tag_rate_New?styles.percent:{display:"none"}}>{item.tag_rate_New}</Text>
             </View>
             <View style={styles.containSmallText}>
               <Text style={styles.smalltext}>{item.date}</Text>

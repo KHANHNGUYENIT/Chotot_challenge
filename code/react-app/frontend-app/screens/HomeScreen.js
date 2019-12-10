@@ -21,6 +21,7 @@ import { Search } from '../components/Search';
 import { Button } from '../components/Button';
 import requestApi from '../utilities/request';
 import * as HOME_API from '../apis/home';
+import * as RECOMMEND_API from '../apis/recommend';
 import * as AUTHENTICATION_API from '../apis/authentication';
 import * as EVENT from '../apis/event';
 import { cloneDeep, pick } from 'lodash';
@@ -50,14 +51,13 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-   
-    this.getData();
     this.getDataBDS();
     this.getDataXe();
     this.getDataNoiThat();
     this.getDataThuC();
     this.getDataByTabId(this.state.tabCurrent);
     this.checkLogin();
+    this.getData();
     // this.getInterestedListItem('d59c9611-760e-4c7a-baac-a72ac5000680');
   }
 
@@ -214,7 +214,7 @@ class HomeScreen extends React.Component {
   }
 
   getInterestedListItem = async (userId) => {
-    let api = cloneDeep(HOME_API.getInterestedItem);
+    let api = cloneDeep(RECOMMEND_API.getInterestedItem);
     api.request.body = JSON.stringify({
       userID: userId,
     });
@@ -348,7 +348,7 @@ class HomeScreen extends React.Component {
                 </TouchableOpacity>
               </View>
               <FlatList
-                data={this.state.dataDDT.ads}
+                data={this.state.interestedList.ads}
                 renderItem={this.renderList}
                 keyExtractor={item => item.ad_id.toString()}
                 horizontal={true}

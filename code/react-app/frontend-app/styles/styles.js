@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   image: {
-    borderRadius:4,
+    borderRadius: 4,
     width: 100,
     height: 120
   },
@@ -114,35 +114,44 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     backgroundColor: '#fff'
   },
-  containSmallText:{ 
+  containSmallText: {
     flexDirection: "row",
     marginTop: 3
   },
-  smalltext:{
-    fontSize:11,
-    color:"#8c8c8c"
+  smalltext: {
+    fontSize: 11,
+    color: "#8c8c8c"
   },
-  percent:{fontSize:10, color:"#008ae6", borderColor:"#008ae6",borderStyle:"solid",borderWidth:1,padding:1,marginLeft:5,borderRadius:5},
+  percent: {
+    fontSize: 10,
+    color: "#008ae6",
+    borderColor: "#008ae6",
+    borderStyle: "solid",
+    borderWidth: 1,
+    padding: 1,
+    marginLeft: 5,
+    borderRadius: 5
+  },
 
   containerNoti: {
     flex: 1,
-    flexDirection:'column',
+    flexDirection: 'column',
     paddingTop: 15,
     backgroundColor: '#fff',
-    justifyContent:'center'
-  
+    justifyContent: 'center'
+
   },
-  styleIcon:{
+  styleIcon: {
     //flex:0.7,
-    justifyContent:'center', 
-    alignItems:'center',
-    marginLeft:10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
   },
-  styleText:{
-   // flex:0.3,
-    color:"#ffba00", textAlign:'center',
+  styleText: {
+    // flex:0.3,
+    color: "#ffba00", textAlign: 'center',
     marginBottom: 20,
-     fontSize:30
+    fontSize: 30
   },
 
 });
