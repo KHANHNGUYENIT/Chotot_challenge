@@ -37,17 +37,25 @@ class HomeScreen extends React.Component {
       loading: true,
       dataBDS: [],
       dataDDT: [],
+      dataXe:[],
+      dataNoiThat: [],
+      dataThuC:[],
       interestedList: [],
       headList: [],
       tabCurrent: 1,
       userId: "",
-      keySearch: ""
+      keySearch: "",
+      dataTest: [],
     }
   }
 
   componentDidMount() {
+   
     this.getData();
     this.getDataBDS();
+    this.getDataXe();
+    this.getDataNoiThat();
+    this.getDataThuC();
     this.getDataByTabId(this.state.tabCurrent);
     this.checkLogin();
     // this.getInterestedListItem('d59c9611-760e-4c7a-baac-a72ac5000680');
@@ -135,6 +143,46 @@ class HomeScreen extends React.Component {
       console.log(error);
     })
   }
+  getDataXe = async () => {
+    let api = cloneDeep(HOME_API.getItem);
+    api.url = api.url + "?cg=" + general.category.Xeco + "&limit="
+      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+    console.log('before fetch');
+    requestApi(api).then(async (data) => {
+      const jsonData = await data.json();
+      this.setState({ dataXe: jsonData });
+      this.setLoading(false)
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  getDataNoiThat = async () => {
+    let api = cloneDeep(HOME_API.getItem);
+    api.url = api.url + "?cg=" + general.category.NoiThat + "&limit="
+      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+    console.log('before fetch');
+    requestApi(api).then(async (data) => {
+      const jsonData = await data.json();
+      this.setState({ dataNoiThat: jsonData });
+      this.setLoading(false)
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  getDataThuC = async () => {
+    let api = cloneDeep(HOME_API.getItem);
+    api.url = api.url + "?cg=" + general.category.ThuCung + "&limit="
+      + general.page.limit + "&o=" + general.page.offset + "&distance=" + general.page.distance;
+    console.log('before fetch');
+    requestApi(api).then(async (data) => {
+      const jsonData = await data.json();
+      this.setState({ dataThuC: jsonData });
+      this.setLoading(false)
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
 
   checkLogin = () => {
     let api = cloneDeep(AUTHENTICATION_API.checkLogin);
@@ -321,6 +369,54 @@ class HomeScreen extends React.Component {
               {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
               <FlatList
                 data={this.state.dataBDS.ads}
+                renderItem={this.renderList}
+                keyExtractor={item => item.ad_id.toString()}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <View style={styles.viewFlatHome}>
+              <View style={styles.headerGroup}>
+                <Text style={styles.header}>Xe cộ </Text>
+                <TouchableOpacity onPress={() => this.onPressLink(11)}>
+                  <Text style={styles.link}>Xem thêm</Text>
+                </TouchableOpacity>
+              </View>
+              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
+              <FlatList
+                data={this.state.dataXe.ads}
+                renderItem={this.renderList}
+                keyExtractor={item => item.ad_id.toString()}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <View style={styles.viewFlatHome}>
+              <View style={styles.headerGroup}>
+                <Text style={styles.header}>Đồ gia dụng, Nội thất </Text>
+                <TouchableOpacity onPress={() => this.onPressLink(7)}>
+                  <Text style={styles.link}>Xem thêm</Text>
+                </TouchableOpacity>
+              </View>
+              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
+              <FlatList
+                data={this.state.dataNoiThat.ads}
+                renderItem={this.renderList}
+                keyExtractor={item => item.ad_id.toString()}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <View style={styles.viewFlatHome}>
+              <View style={styles.headerGroup}>
+                <Text style={styles.header}>Thú cưng </Text>
+                <TouchableOpacity onPress={() => this.onPressLink(13)}>
+                  <Text style={styles.link}>Xem thêm</Text>
+                </TouchableOpacity>
+              </View>
+              {/* <View style={{ flex: 0.05, marginTop: 2, height: 1, backgroundColor: '#ffa100' }}></View> */}
+              <FlatList
+                data={this.state.dataThuC.ads}
                 renderItem={this.renderList}
                 keyExtractor={item => item.ad_id.toString()}
                 horizontal={true}

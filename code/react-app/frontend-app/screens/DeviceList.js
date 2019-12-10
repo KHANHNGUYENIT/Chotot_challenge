@@ -241,10 +241,6 @@ class DeviceList extends React.Component {
                 </MaterialCommunityIcons>
               </TouchableOpacity>
             </View>
-            {/* <View style={{ flexDirection: 'row' }}>
-              <MaterialIcons style={{ marginLeft: 5 }} name="location-on" color='gray' ></MaterialIcons>
-              <Text style={styles.styleTextAddress} >{item.region_name}</Text>
-            </View> */}
           </View>
         </View>
       </TouchableOpacity>
@@ -285,8 +281,6 @@ class DeviceList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //  backgroundColor: '#F8F8FF',
-    //marginTop:10,
   },
   lottie: {
     width: 100,
@@ -296,14 +290,6 @@ const styles = StyleSheet.create({
     height: 110,
     flex: 1, flexDirection: 'column',
     marginTop: 7,
-    //marginBottom: 7,
-    // marginLeft: 7,
-    // marginRight:7,
-    // borderRadius:14,
-
-    // borderWidth:1,
-    // borderColor: '#ffba00',
-
     elevation: 5, // Android
     shadowColor: '#CFD8DC', // iOS
     shadowOffset: {
@@ -318,19 +304,13 @@ const styles = StyleSheet.create({
     // flex: 0.315,
     width: 120,
     height: 109,
-    // borderTopLeftRadius:14,
-    // borderBottomLeftRadius: 14,
-    // borderRadius: 14,
-    //marginBottom:1,
   },
   styleTextSubject: {
-    //  flex: 0.45,
     fontSize: 15,
     marginLeft: 7,
     fontWeight: "bold",
   },
   styleTextPrice: {
-    // flex: 0.8,
     fontSize: 15,
     color: 'red',
     marginLeft: 7,
@@ -338,7 +318,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   styleTextAddress: {
-    //flex: 0.15,
     fontSize: 10,
     alignItems: 'flex-end',
     marginLeft: 7,
@@ -350,7 +329,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   styleText: {
-    // flex: 0.685,
     width: "80%",
     flexDirection: 'column',
     marginLeft: 0.5,
@@ -358,8 +336,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 14,
     marginBottom: 1.5,
     marginTop: 0.5,
-    // marginLeft:0.1,
-    // backgroundColor:'#00ffef',
   },
   containSmallText: {
     width: "90%",
